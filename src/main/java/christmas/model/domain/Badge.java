@@ -1,6 +1,6 @@
 package christmas.model.domain;
 
-public enum Badge implements Comparable<Badge> {
+public enum Badge {
     STAR(5_000),
     TREE(10_000),
     SANTA(20_000);
