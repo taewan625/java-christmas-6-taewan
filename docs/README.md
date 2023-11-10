@@ -77,14 +77,16 @@
     1. 모든 Month boolean 각각 돌면서 true명 해당 event 적용하고 반환값 domain에 저장하기
     2. Month에 true인 객체 list 반환 -> 한번에 하고 싶은데 어떻게 해야할까?
        ⭐️ discountEvent는 대체로 공통된부분이 많고 Month의 영향을 받는다. promotion은 Month 영향을 안받으니 따로 적용
-       공통된 변수명들을 enum으로 생성하자 `DDAY("크리스마스 데데이 할인", DISCOUNT)` INCREASE_PRICE 공통된게 아니니 제외
-       그리고 메서드들은 하나의 클래스로 모으자. 메서드만 있는 static class, 여기에 INCREASE_PRICE 상수 개별로 넣기
-       비슷한 메서드들은 오버로딩 할것.
-       마지막으로 통합 메서드를 만든다. 해당 조건문일때 내부 discount 메서드들이 작동되도록 조건문에는 enum이 쓰일것
+       ~~공통된 변수명들을 enum으로 생성하자 `DDAY("크리스마스 데데이 할인", DISCOUNT)` INCREASE_PRICE 공통된게 아니니 제외~~
+       ~~그리고 메서드들은하나의 클래스로 모으자. 메서드만 있는 static class, 여기에 INCREASE_PRICE 상수 개별로 넣기~~
+       ~~비슷한 메서드들은 오버로딩 할것.~~
+       ~~마지막으로 통합 메서드를 만든다. 해당 조건문일때 내부 discount 메서드들이 작동되도록 조건문에는 enum이 쓰일것
        2번을 적용하게 되면 orderMenu map과 date 2개만 넘기면 된다. 넘겨줄때 order method는 main과 dessert만 가도록 분리 메서드 생성필요
        분리 method는 util에서 아니 customer orderList 있는 도메인에서 수행
+       완전 한번에 해결은 안되지만 최대한 수행, 개별로 값을 반환하므로 이벤트 적용 Map 저장 method는 해당 도메인에서 수행~~
        ~~ps. todo 주문서에는 true일 경우 String과 int price를 줘야할텐데 이건 다음 단계 구현 윤곽 잡히면 그 때 메서드 생성
        ex) Map <String eventType, Map<String promotion, Integer price>>~~
+5. 이벤트 enum에서 반환하는 Map은 customerEvent에서 map.putAll() 이용해서 값 저장하는 메서드 생성하기
 
 ## 고민
 
