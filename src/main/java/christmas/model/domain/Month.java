@@ -1,5 +1,6 @@
 package christmas.model.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,6 +16,20 @@ public enum Month {
     Month(List<Integer> days) {
         this.days = days;
     }
+
+    public static List<String> applyDiscountByDate(int date) {
+        List<String> applyDiscountTypes = new ArrayList<>();
+        for(Month discountType : Month.values()) {
+            if (isDiscountDate(date, discountType)){
+                applyDiscountTypes.add(discountType.name());
+            }
+        }
+        return applyDiscountTypes;
+    }
+    public static boolean isDiscountDate(int date, Month discountType) {
+        return discountType.days.stream().anyMatch(day -> day == date);
+    }
+
     public static boolean isDDay(int date) {
         return D_DAY.days.stream().anyMatch(day -> day == date);
     }
