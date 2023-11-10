@@ -3,20 +3,15 @@ package christmas.model.domain;
 import java.util.Map;
 
 public class WeekendEvent {
+    private final String WEEKEND = "주말 할인";
     private final int DISCOUNT = 2023;
-    private int weekendDiscount = 0;
 
-    public int getWeekendDiscount(Map<Menu, Integer> orderMenu) {
+    public Map<String, Integer> getWeekendDiscount(Map<Menu, Integer> orderMenu) {
+         int weekendDiscount = 0;
         for (Menu menu : orderMenu.keySet()) {
-            if (Menu.isMain(menu)) {
-                weekendDiscount += orderMenu.get(menu) * DISCOUNT;
-            }
+            weekendDiscount += orderMenu.get(menu) * DISCOUNT;
         }
-        return weekendDiscount;
-    }
-
-    public int applyWeekendDiscount(int totalPrice) {
-        return totalPrice - weekendDiscount;
+        return Map.of(WEEKEND, weekendDiscount);
     }
 
 }
