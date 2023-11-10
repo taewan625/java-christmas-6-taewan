@@ -1,18 +1,15 @@
 package christmas.model.domain;
 
-import christmas.model.domain.December;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
-class DecemberTest {
+class MonthTest {
     List<Integer> weekDay = List.of(3, 4, 5, 6, 7, 10, 11,
             12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31);
     List<Integer> weekend = List.of(1, 2, 8, 9, 15, 16, 22, 23, 29, 30);
@@ -30,15 +27,25 @@ class DecemberTest {
     }
 
     @Test
+    void isDDay() {
+        for (int i = 1; i <= 25; i++) {
+            assertThat(Month.isDDay(i)).isTrue();
+        }
+        for (int i = 26; i <= 31; i++) {
+            assertThat(Month.isDDay(i)).isFalse();
+        }
+    }
+
+    @Test
     void isWeekDay() {
         for (Integer day : weekDay) {
-            weekDays.add(December.isWeekDay(day));
+            weekDays.add(Month.isWeekDay(day));
         }
         for (Integer day : weekend) {
-            weekends.add(December.isWeekDay(day));
+            weekends.add(Month.isWeekDay(day));
         }
         for (Integer day : starDay) {
-            starDays.add(December.isWeekDay(day));
+            starDays.add(Month.isWeekDay(day));
         }
 
         assertThat(weekDays).contains(true);
@@ -49,13 +56,13 @@ class DecemberTest {
     @Test
     void isWeekend() {
         for (Integer day : weekDay) {
-            weekDays.add(December.isWeekend(day));
+            weekDays.add(Month.isWeekend(day));
         }
         for (Integer day : weekend) {
-            weekends.add(December.isWeekend(day));
+            weekends.add(Month.isWeekend(day));
         }
         for (Integer day : starDay) {
-            starDays.add(December.isWeekend(day));
+            starDays.add(Month.isWeekend(day));
         }
 
         assertThat(weekDays).contains(false);
@@ -66,13 +73,13 @@ class DecemberTest {
     @Test
     void isStarDay() {
         for (Integer day : weekDay) {
-            weekDays.add(December.isStarDay(day));
+            weekDays.add(Month.isStarDay(day));
         }
         for (Integer day : weekend) {
-            weekends.add(December.isStarDay(day));
+            weekends.add(Month.isStarDay(day));
         }
         for (Integer day : starDay) {
-            starDays.add(December.isStarDay(day));
+            starDays.add(Month.isStarDay(day));
         }
 
         assertThat(weekDays).contains(true, false);
