@@ -1,5 +1,6 @@
 package christmas.model.domain;
 
+import christmas.model.domain.deplicated.WeekDayEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

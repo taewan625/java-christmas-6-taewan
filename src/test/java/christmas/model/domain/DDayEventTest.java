@@ -1,5 +1,6 @@
 package christmas.model.domain;
 
+import christmas.model.domain.deplicated.DDayEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -8,7 +9,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DDayEventTest {
-    DDayEvent DDayEvent = new DDayEvent();
+    christmas.model.domain.deplicated.DDayEvent DDayEvent = new DDayEvent();
 
     @Test
     void getDDayDiscount() {
