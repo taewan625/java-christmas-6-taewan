@@ -17,12 +17,14 @@ class BadgeTest {
     }
     @Test
     void getBadge() {
+        int notEnoughPoint = 4999;
         int starPointMin = 5000;
         int starPointMax = 9_999;
         int treePointMin = 10_000;
         int treePointMax = 19_999;
         int santaPointMin = 20_000;
         for (int i = 0; i < 100; i++) {
+            assertThat(Badge.getBadge(notEnoughPoint)).isSameAs(null);
             assertThat(Badge.getBadge(starPointMin)).isSameAs(Badge.STAR);
             assertThat(Badge.getBadge(starPointMax)).isSameAs(Badge.STAR);
             assertThat(Badge.getBadge(treePointMin)).isSameAs(Badge.TREE);
