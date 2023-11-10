@@ -1,21 +1,17 @@
 package christmas.model.domain;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class WeekDayEvent {
+    private final String WEEKDAY = "평일 할인";
     private final int DISCOUNT = 2023;
-    private int weekDayDiscount = 0;
 
-    public int getWeekdayDiscount(Map<Menu, Integer> orderMenu) {
+    public Map<String, Integer> getWeekdayDiscount(Map<Menu, Integer> orderMenu) {
+        int weekDayDiscount = 0;
         for (Menu menu : orderMenu.keySet()) {
-            if (Menu.isDessert(menu)) {
-                weekDayDiscount += orderMenu.get(menu) * DISCOUNT;
-            }
+            weekDayDiscount += orderMenu.get(menu) * DISCOUNT;
         }
-        return weekDayDiscount;
-    }
-
-    public int applyWeekdayDiscount(int totalPrice) {
-        return totalPrice - weekDayDiscount;
+        return Map.of(WEEKDAY, weekDayDiscount);
     }
 }
