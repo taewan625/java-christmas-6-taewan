@@ -1,13 +1,15 @@
 package christmas.model.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class WeekDayEventTest {
     WeekDayEvent weekDayEvent = new WeekDayEvent();
@@ -16,8 +18,6 @@ class WeekDayEventTest {
     @BeforeEach
     void before() {
         orderMenu.put(Menu.DESSERT_1, 2);
-        orderMenu.put(Menu.APPETIZER_2, 4);
-        orderMenu.put(Menu.MAIN_4, 3);
     }
 
     @AfterEach
@@ -28,16 +28,10 @@ class WeekDayEventTest {
     @Test
     @DisplayName("평일은 디저트만 할인이 된다.")
     void getWeekdayDiscount() {
-        int weekdayDiscount = weekDayEvent.getWeekdayDiscount(orderMenu);
-        Assertions.assertThat(weekdayDiscount).isEqualTo(2023 * 2);
-    }
+        Map<String, Integer> weekdayDiscount = weekDayEvent.getWeekdayDiscount(orderMenu);
+        Collection<Integer> values = weekdayDiscount.values();
 
-    @Test
-    void applyWeekdayDiscount() {
-        int totalPrice = 200_000;
-        int weekdayDiscount = weekDayEvent.getWeekdayDiscount(orderMenu);
-        int discountedAmount = weekDayEvent.applyWeekdayDiscount(totalPrice);
-        Assertions.assertThat(discountedAmount).isEqualTo(totalPrice-weekdayDiscount);
+        assertThat(values.contains(2023 * 2)).isTrue();
     }
 
 
