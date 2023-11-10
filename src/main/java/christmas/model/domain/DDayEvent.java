@@ -1,6 +1,7 @@
 package christmas.model.domain;
 
-public class DurationEvent {
+public class DDay {
+    private final String DURATION = "크리스마스 디데이 할인";
     private final int INIT_DISCOUNT = 1000;
     private final int INCREASE_PRICE = 100;
     private final int START_DATE = 1;

@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DurationEventTest {
-    DurationEvent durationEvent = new DurationEvent();
+class DDayTest {
+    DDay DDay = new DDay();
 
     @Test
     void getDurationDiscount() {
         int reservationDate = 1;
-        int durationDiscount = durationEvent.getDurationDiscount(reservationDate);
+        int durationDiscount = DDay.getDurationDiscount(reservationDate);
         assertThat(durationDiscount).isEqualTo(1000);
     }
 
@@ -20,9 +20,9 @@ class DurationEventTest {
         int reservationDate2 = 25;
         int reservationDate3 = 26;
 
-        boolean durationEvent1 = durationEvent.isDurationEvent(reservationDate1);
-        boolean durationEvent2 = durationEvent.isDurationEvent(reservationDate2);
-        boolean durationEvent3 = durationEvent.isDurationEvent(reservationDate3);
+        boolean durationEvent1 = DDay.isDurationEvent(reservationDate1);
+        boolean durationEvent2 = DDay.isDurationEvent(reservationDate2);
+        boolean durationEvent3 = DDay.isDurationEvent(reservationDate3);
         assertThat(durationEvent1).isTrue();
         assertThat(durationEvent2).isTrue();
         assertThat(durationEvent3).isFalse();
@@ -32,8 +32,8 @@ class DurationEventTest {
     void applyDurationDiscount() {
         int totalPrice = 11000;
         int date = 3;
-        int durationDiscount = durationEvent.getDurationDiscount(date);
-        int discountPrice = durationEvent.applyDurationDiscount(totalPrice);
+        int durationDiscount = DDay.getDurationDiscount(date);
+        int discountPrice = DDay.applyDurationDiscount(totalPrice);
         assertThat(discountPrice).isEqualTo(9800);
     }
 }
