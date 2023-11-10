@@ -1,6 +1,7 @@
-package christmas.model.domain;
+package christmas.model.domain.deplicated;
 
-import java.util.HashMap;
+import christmas.model.domain.Menu;
+
 import java.util.Map;
 
 public class WeekDayEvent {

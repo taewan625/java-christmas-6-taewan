@@ -1,4 +1,4 @@
-package christmas.model.domain;
+package christmas.model.domain.deplicated;
 
 import java.util.Map;
 

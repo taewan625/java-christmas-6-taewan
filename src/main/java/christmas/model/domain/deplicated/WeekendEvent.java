@@ -1,4 +1,6 @@
-package christmas.model.domain;
+package christmas.model.domain.deplicated;
+
+import christmas.model.domain.Menu;
 
 import java.util.Map;
 
@@ -13,5 +15,6 @@ public class WeekendEvent {
         }
         return Map.of(WEEKEND, weekendDiscount);
     }
+
 
 }
