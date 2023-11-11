@@ -30,6 +30,7 @@ public enum Month {
         return discountType.days.stream().anyMatch(day -> day == date);
     }
 
+    // todo: 나중에 안쓰면 제거
     public static boolean isDDay(int date) {
         return D_DAY.days.stream().anyMatch(day -> day == date);
     }
