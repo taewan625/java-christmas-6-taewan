@@ -1,5 +1,8 @@
 package christmas.model.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public enum Menu {
@@ -10,11 +13,11 @@ public enum Menu {
     MAIN_2("바비큐립", "main", 54_000),
     MAIN_3("해산물파스타", "main", 35_000),
     MAIN_4("크리스마스파스타", "main", 25_000),
-    DESSERT_1("초코케이크","dessert", 15_000),
-    DESSERT_2("아이스크림","dessert", 5_000),
-    DRINK_1("크리스마스파스타", "drink", 3_000),
-    DRINK_2("크리스마스파스타", "drink", 60_000),
-    DRINK_3("크리스마스파스타", "drink", 25_000);
+    DESSERT_1("초코케이크", "dessert", 15_000),
+    DESSERT_2("아이스크림", "dessert", 5_000),
+    DRINK_1("제로콜라", "drink", 3_000),
+    DRINK_2("레드와인", "drink", 60_000),
+    DRINK_3("샴페인", "drink", 25_000);
 
     private static final String APPETIZER = "appetizer";
     private static final String MAIN = "main";
@@ -31,9 +34,39 @@ public enum Menu {
         this.price = price;
     }
 
+    public static Menu getMenu(String orderMenu) {
+        for (Menu menu : Menu.values()) {
+            if (Objects.equals(menu.name, orderMenu)) {
+                return menu;
+            }
+        }
+        throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+    }
+
+    public static String getPromotionMenu(String promotionMenu) {
+        return Menu.valueOf(promotionMenu).name;
+    }
+
+    public static List<String> getOrderMenus(Map<Menu, Integer> orderMenus) {
+        List<String> getOrderMenus = new ArrayList<>();
+        for (Menu menu : orderMenus.keySet()) {
+            getOrderMenus.add(menu.name + " " + orderMenus.get(menu));
+        }
+        return getOrderMenus;
+    }
+
+    public static int getTotalOrderPrice(Map<Menu, Integer> orderMenus) {
+        int totalOrderPrice = 0;
+        for (Menu menu : orderMenus.keySet()) {
+            totalOrderPrice += menu.price * orderMenus.get(menu);
+        }
+        return totalOrderPrice;
+    }
+
     public static boolean isMain(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.MAIN);
     }
+
     public static boolean isDessert(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.DESERT);
     }
