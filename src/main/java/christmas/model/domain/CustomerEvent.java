@@ -1,6 +1,5 @@
 package christmas.model.domain;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerEvent {
@@ -10,21 +9,43 @@ public class CustomerEvent {
     private int totalBenefitAmount;
     private Badge badge;
 
-    public CustomerEvent() {
-        this.discountEventDatas = new HashMap<>();
-        this.promotionEventDatas = new HashMap<>();
+    public CustomerEvent(Map<String, Integer> discountEventDatas, Map<String, Integer> promotionEventDatas) {
+        this.discountEventDatas = discountEventDatas;
+        this.promotionEventDatas = promotionEventDatas;
+        setTotalDiscountPrice();
+        setTotalBenefitAmount();
+        setBadge();
     }
 
-    public void setEventData() {
+    private void setTotalDiscountPrice() {
         totalDiscountPrice = sumEventValues(discountEventDatas);
-        totalBenefitAmount = totalDiscountPrice + sumEventValues(promotionEventDatas);
+    }
+
+    private void setTotalBenefitAmount() {
+        totalBenefitAmount = this.totalDiscountPrice + sumEventValues(promotionEventDatas);
     }
 
     private int sumEventValues(Map<String, Integer> datas) {
         return datas.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    public void setBadge() {
-        badge = Badge.getBadge(totalBenefitAmount);
+    private void setBadge() {
+        this.badge = Badge.getBadge(totalBenefitAmount);
+    }
+
+    public String getPromotionMenu() {
+        String promotionEventDataKey = getPromotionEventDataKey();
+        return Menu.getPromotionMenu(promotionEventDataKey);
+    }
+
+    public int getPromotionMenuCount() {
+        String promotionEventDataKey = getPromotionEventDataKey();
+        return promotionEventDatas.get(promotionEventDataKey);
+    }
+
+    private String getPromotionEventDataKey() {
+        // promotion 종류가 1개기 때문에 next()만 호출
+        String promotionEventDataKey = promotionEventDatas.keySet().iterator().next();
+        return promotionEventDataKey;
     }
 }
