@@ -33,14 +33,11 @@ public class CustomerEvent {
         this.badge = Badge.getBadge(totalBenefitAmount);
     }
 
-    public String getPromotionMenu() {
+    public String getPromotionData() {
         String promotionEventDataKey = getPromotionEventDataKey();
-        return Menu.getPromotionMenu(promotionEventDataKey);
-    }
-
-    public int getPromotionMenuCount() {
-        String promotionEventDataKey = getPromotionEventDataKey();
-        return promotionEventDatas.get(promotionEventDataKey);
+        String promotionMenu = Menu.getPromotionMenu(promotionEventDataKey);
+        Integer promotionMenuCount = promotionEventDatas.get(promotionEventDataKey);
+        return promotionMenu + "\s" + promotionMenuCount;
     }
 
     private String getPromotionEventDataKey() {
