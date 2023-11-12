@@ -14,17 +14,10 @@ import java.util.Map;
 public class XmasController {
     public void run() {
         CustomerOrder customerOrder = book();
-        int totalOrderPrice = customerOrder.getTotalOrderPrice(); // todo. 없앨수 있으면 없애도록...
         showCustomerOrder(customerOrder);
-        showTotalOrderPrice(totalOrderPrice);
         CustomerEvent customerEvent = applyEvent(customerOrder);
         showCustomerPromotion(customerEvent);
         showCustomerEvent(customerEvent);
-    }
-
-    private void showTotalOrderPrice(int totalOrderPrice) {
-        OutputView.printStaticMessage(OutputView.ORDER_PRICE);
-        OutputView.printStaticMessage(XmasConverter.toWon(totalOrderPrice));
     }
 
     private CustomerOrder book() {
@@ -45,6 +38,8 @@ public class XmasController {
         OutputView.printReservationFullDate(reservationFullDate);
         List<String> orderMenus = customerOrder.getOrderMenus();
         OutputView.printOrderMenus(orderMenus);
+        OutputView.printStaticMessage(OutputView.ORDER_PRICE);
+        OutputView.printStaticMessage(customerOrder.getTotalOrderPrice());
     }
 
     private CustomerEvent applyEvent(CustomerOrder customerOrder) {
