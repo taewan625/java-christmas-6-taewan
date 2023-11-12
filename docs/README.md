@@ -88,7 +88,8 @@
 ex) Map <String eventType, Map<String promotion, Integer price>>~~
 ~~5. 이벤트 enum에서 반환하는 Map은 customerEvent에서 map.putAll() 이용해서 값 저장하는 메서드 생성하기~~
 
-6. event에서 출력 관련 메서드 출력
+~~6. event에서 출력 관련 메서드 출력~~
+~~+) dto 처럼 사용하는 orderprice를 CustomerOrder에 넣어서 사용. domain 변수 추가~~
 7. CustomerPayment domain method들은 출력용으로만 사용되므로 절차적 개발 시 필요 메서드 추가하기
    -> 연습해야되므로 우선 필요한 매개변수를 상상해서 메서드 만들고 난 후 절차적 개발 시 수정하기
 8. 이후 절차적 로직 다 수행
