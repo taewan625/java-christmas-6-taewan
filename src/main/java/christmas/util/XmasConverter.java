@@ -41,7 +41,7 @@ public class XmasConverter {
         return decimalFormat.format(discountPrice);
     }
 
-    public static String discountData(String discountData) {
+    public static String benefitData(String discountData) {
         String[] discountDatas = discountData.split("=");
         return discountDatas[KEY] + ": " + toMinusWon(Integer.parseInt(discountDatas[VALUE]));
     }
