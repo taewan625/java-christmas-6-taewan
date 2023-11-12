@@ -1,9 +1,6 @@
 package christmas.controller;
 
-import christmas.model.domain.CustomerEvent;
-import christmas.model.domain.CustomerOrder;
-import christmas.model.domain.Menu;
-import christmas.model.domain.Promotion;
+import christmas.model.domain.*;
 import christmas.util.XmasConverter;
 import christmas.view.InputView;
 import christmas.view.OutputView;
@@ -18,6 +15,11 @@ public class XmasController {
         CustomerEvent customerEvent = applyEvent(customerOrder);
         showCustomerPromotion(customerEvent);
         showCustomerEvent(customerEvent);
+        OutputView.printStaticMessage(OutputView.PAYMENT_PRICE);
+        String predictPay = customerOrder.getPredictPay(customerEvent);
+        OutputView.printStaticMessage(predictPay);
+        OutputView.printStaticMessage(OutputView.BADGE);
+        System.out.println(customerEvent.getBadge());
     }
 
     private CustomerOrder book() {
@@ -47,16 +49,6 @@ public class XmasController {
         List<Promotion> promotionDatas = customerOrder.getPromotionData();
         return new CustomerEvent(discountDatas, promotionDatas);
     }
-
-
-/*
-
-<총혜택 금액>
--31,246원
-
- <12월 이벤트 배지>
-산타
-*/
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
         OutputView.printStaticMessage(OutputView.PROMOTION_MENU);
