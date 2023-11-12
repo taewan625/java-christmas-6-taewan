@@ -49,4 +49,9 @@ public class CustomerOrder {
     public String getTotalOrderPrice() {
         return XmasConverter.toWon(totalOrderPrice);
     }
+
+    public String getPredictPay(CustomerEvent customerEvent) {
+        int predictPay = customerEvent.getPredictPay(totalOrderPrice);
+        return XmasConverter.toWon(predictPay);
+    }
 }
