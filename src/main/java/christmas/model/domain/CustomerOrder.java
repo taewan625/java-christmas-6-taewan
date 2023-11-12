@@ -25,19 +25,12 @@ public class CustomerOrder {
 
     public Map<String, Integer> getDiscountDatas() {
         Map<String, Integer> discountDatas = new HashMap<>();
-        List<String> discounts = applyDiscountByDate();
+        List<String> discounts = Month.applyDiscountByDate(reservationDate);
         for (String discount : discounts) {
-            discountDatas.putAll(applyDiscount(discount));
+            Map<String, Integer> discountData = Discount.applyDiscount(discount, reservationDate, orderMenus);
+            discountDatas.putAll(discountData);
         }
         return discountDatas;
-    }
-
-    private List<String> applyDiscountByDate() {
-        return Month.applyDiscountByDate(reservationDate);
-    }
-
-    private Map<String, Integer> applyDiscount(String discount) {
-        return Discount.applyDiscount(discount, reservationDate, orderMenus);
     }
 
     public Map<String, Integer> getPromotionData() {
