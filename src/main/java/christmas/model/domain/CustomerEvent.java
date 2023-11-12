@@ -13,7 +13,7 @@ public class CustomerEvent {
     private List<Promotion> promotions;
     private int totalDiscountPrice; // 할인 후 예상 결제 금액에 사용
     private int totalBenefitAmount;
-    private Badge badge;
+    private final String badge;
 
     public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
         this.discountDatas = discountDatas;
@@ -21,7 +21,11 @@ public class CustomerEvent {
         setBenefitDatas();
         setTotalDiscountPrice();
         setTotalBenefitAmount();
-        setBadge();
+        badge = setBadge();
+    }
+
+    public int getPredictPay(int totalOrderPrice) {
+        return totalOrderPrice - totalDiscountPrice;
     }
 
     private void setBenefitDatas() {
@@ -44,8 +48,8 @@ public class CustomerEvent {
         return datas.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    private void setBadge() {
-        this.badge = Badge.getBadge(totalBenefitAmount);
+    private String setBadge() {
+        return Badge.getBadge(totalBenefitAmount);
     }
 
     public String getPromotionProduct() {
@@ -70,5 +74,9 @@ public class CustomerEvent {
 
     public boolean isBenefitDatas() {
         return !benefitDatas.isEmpty();
+    }
+
+    public String getBadge() {
+        return badge;
     }
 }
