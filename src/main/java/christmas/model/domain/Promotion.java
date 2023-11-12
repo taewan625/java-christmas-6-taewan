@@ -17,7 +17,12 @@ public enum Promotion {
         return totalPrice >= PROMOTION_LIMIT_PRICE;
     }
 
-    public static Map<String, Integer> getPromotion() {
-        return Map.of(DRINK_3.name(), DRINK_3.count);
+    public static Map<String, Integer> setPromotionDatas(Promotion promotion) {
+        int price = Menu.getMenuPrice(promotion.name(), promotion.count);
+        return Map.of(promotion.type, price);
+    }
+
+    public static String getPromotionProduct(Promotion promotion) {
+        return Menu.getMenuName(promotion.name(), promotion.count);
     }
 }
