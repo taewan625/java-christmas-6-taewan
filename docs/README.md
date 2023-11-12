@@ -90,9 +90,9 @@ ex) Map <String eventType, Map<String promotion, Integer price>>~~
 
 ~~6. event에서 출력 관련 메서드 출력~~
 ~~+) dto 처럼 사용하는 orderprice를 CustomerOrder에 넣어서 사용. domain 변수 추가~~
-7. CustomerPayment domain method들은 출력용으로만 사용되므로 절차적 개발 시 필요 메서드 추가하기
-   -> 연습해야되므로 우선 필요한 매개변수를 상상해서 메서드 만들고 난 후 절차적 개발 시 수정하기
-8. 이후 절차적 로직 다 수행
+~~7. CustomerPayment domain method들은 출력용으로만 사용되므로 절차적 개발 시 필요 메서드 추가하기
+   -> 연습해야되므로 우선 필요한 매개변수를 상상해서 메서드 만들고 난 후 절차적 개발 시 수정하기~~
+~~8. 이후 절차적 로직 다 수행~~
 9. 세세한 부분 : 검증, 조건 부분 수행 및 전체적 unit test 수행
 
 ~~dto: totalOrderCount는 한 3곳에서 제각각 사용되므로 혼자있으면 method내부에 iv로 받고 여러개들이 이지경이 되면 dto로 받기~~
