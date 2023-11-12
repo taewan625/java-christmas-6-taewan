@@ -3,7 +3,6 @@ package christmas.controller;
 import christmas.model.domain.CustomerEvent;
 import christmas.model.domain.CustomerOrder;
 import christmas.model.domain.Menu;
-import christmas.model.domain.Promotion;
 import christmas.util.XmasConverter;
 import christmas.view.InputView;
 import christmas.view.OutputView;
@@ -14,11 +13,12 @@ import java.util.Map;
 public class XmasController {
     public void run() {
         CustomerOrder customerOrder = book();
-        int totalOrderPrice = customerOrder.getTotalOrderPrice();
+        int totalOrderPrice = customerOrder.getTotalOrderPrice(); // todo. 없앨수 있으면 없애도록...
         showCustomerOrder(customerOrder);
         showTotalOrderPrice(totalOrderPrice);
         CustomerEvent customerEvent = applyEvent(customerOrder);
-        showCustomerEvent(customerEvent, totalOrderPrice);
+        showCustomerPromotion(customerEvent);
+        showCustomerEvent(customerEvent);
     }
 
     private void showTotalOrderPrice(int totalOrderPrice) {
@@ -54,20 +54,6 @@ public class XmasController {
 
 
 /*
-<총혜택 금액>
-0원
-
-<할인 후 예상 결제 금액>
-8,500원
-
-<12월 이벤트 배지>
-없음
-
-<혜택 내역>
-크리스마스 디데이 할인: -1,200원
-평일 할인: -4,046원
-특별 할인: -1,000원
-증정 이벤트: -25,000원
 
 <총혜택 금액>
 -31,246원
@@ -76,11 +62,12 @@ public class XmasController {
 산타
 */
 
-    public void showCustomerEvent(CustomerEvent customerEvent, int totalOrderPrice) {
+    private void showCustomerPromotion(CustomerEvent customerEvent) {
         OutputView.printStaticMessage(OutputView.PROMOTION_MENU);
 
         String promotionValue = OutputView.NONE;
-        if (Promotion.isPromotion(totalOrderPrice)) {
+
+        if (customerEvent.isPromotionEventDatas()) {
             String promotionMenuData = customerEvent.getPromotionData();
             promotionValue = promotionMenuData + OutputView.UNIT;
         }
@@ -88,5 +75,16 @@ public class XmasController {
         OutputView.printStaticMessage(promotionValue);
     }
 
-
+    private void showCustomerEvent(CustomerEvent customerEvent) {
+        OutputView.printStaticMessage(OutputView.EVENT_HISTORY);
+        if (!customerEvent.isDiscountEventDatas()) {
+            OutputView.printStaticMessage(OutputView.NONE);
+        }
+        if (customerEvent.isDiscountEventDatas()) {
+            List<String> discountDatas = customerEvent.getDiscountData();
+            for (String discountData : discountDatas) {
+                OutputView.printStaticMessage(XmasConverter.discountData(discountData));
+            }
+        }
+    }
 }
