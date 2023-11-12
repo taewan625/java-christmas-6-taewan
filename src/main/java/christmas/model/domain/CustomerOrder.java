@@ -2,6 +2,7 @@ package christmas.model.domain;
 
 import christmas.util.XmasConverter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +34,11 @@ public class CustomerOrder {
         return discountDatas;
     }
 
-    public Map<String, Integer> getPromotionData() {
+    public List<Promotion> getPromotionData() {
         if (Promotion.isPromotion(getTotalOrderPrice())) {
-            return Promotion.getPromotion();
+            return List.of(Promotion.DRINK_3);
         }
-        return new HashMap<>(); // todo. 나중에 없음 같은거 고민 필요
+        return new ArrayList<>(); // todo. 나중에 없음 같은거 고민 필요
     }
 
     public int getTotalOrderPrice() {
