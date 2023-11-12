@@ -43,8 +43,12 @@ public enum Menu {
         throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
     }
 
-    public static String getPromotionMenu(String promotionMenu) {
-        return Menu.valueOf(promotionMenu).name;
+    public static String getMenuName(String promotion, int count) {
+        return Menu.valueOf(promotion).name + " " + count;
+    }
+
+    public static int getMenuPrice(String promotion, int count) {
+        return Menu.valueOf(promotion).price * count;
     }
 
     public static List<String> getOrderMenus(Map<Menu, Integer> orderMenus) {
