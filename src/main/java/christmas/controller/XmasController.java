@@ -3,6 +3,7 @@ package christmas.controller;
 import christmas.model.domain.CustomerEvent;
 import christmas.model.domain.CustomerOrder;
 import christmas.model.domain.Menu;
+import christmas.model.domain.Promotion;
 import christmas.util.XmasConverter;
 import christmas.view.InputView;
 import christmas.view.OutputView;
@@ -48,7 +49,7 @@ public class XmasController {
 
     private CustomerEvent applyEvent(CustomerOrder customerOrder) {
         Map<String, Integer> discountDatas = customerOrder.getDiscountDatas();
-        Map<String, Integer> promotionDatas = customerOrder.getPromotionData();
+        List<Promotion> promotionDatas = customerOrder.getPromotionData();
         return new CustomerEvent(discountDatas, promotionDatas);
     }
 
@@ -67,8 +68,8 @@ public class XmasController {
 
         String promotionValue = OutputView.NONE;
 
-        if (customerEvent.isPromotionEventDatas()) {
-            String promotionMenuData = customerEvent.getPromotionData();
+        if (customerEvent.isPromotionDatas()) {
+            String promotionMenuData = customerEvent.getPromotionProduct();
             promotionValue = promotionMenuData + OutputView.UNIT;
         }
 
@@ -77,14 +78,14 @@ public class XmasController {
 
     private void showCustomerEvent(CustomerEvent customerEvent) {
         OutputView.printStaticMessage(OutputView.EVENT_HISTORY);
-        if (!customerEvent.isDiscountEventDatas()) {
+        if (!customerEvent.isBenefitDatas()) {
             OutputView.printStaticMessage(OutputView.NONE);
         }
-        if (customerEvent.isDiscountEventDatas()) {
-            List<String> discountDatas = customerEvent.getDiscountData();
-            for (String discountData : discountDatas) {
-                OutputView.printStaticMessage(XmasConverter.discountData(discountData));
-            }
+        if (customerEvent.isBenefitDatas()) {
+            List<String> benefitData = customerEvent.getBenefitData();
+            benefitData.stream().map(XmasConverter::benefitData).forEach(OutputView::printStaticMessage);
         }
+        OutputView.printStaticMessage(OutputView.TOTAL_EVENT_PRICE);
+        OutputView.printStaticMessage(customerEvent.getTotalBenefit());
     }
 }
