@@ -16,6 +16,9 @@ public class XmasConverter {
     private static final int KEY = 0;
     private static final int VALUE = 1;
 
+    public static int StringToInt(String string) {
+        return Integer.parseInt(string);
+    }
 
     public static Map<Menu, Integer> StringToMap(String orderMenu) {
         Map<Menu, Integer> orderMenus = new HashMap<>();
