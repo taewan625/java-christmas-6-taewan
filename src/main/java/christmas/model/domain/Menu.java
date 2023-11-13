@@ -1,9 +1,8 @@
 package christmas.model.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import christmas.util.XmasConverter;
+
+import java.util.*;
 
 public enum Menu {
     NO_MENU("없는 메뉴", "noMenu", 0),
@@ -35,12 +34,10 @@ public enum Menu {
     }
 
     public static Menu getMenu(String orderMenu) {
-        for (Menu menu : Menu.values()) {
-            if (Objects.equals(menu.name, orderMenu)) {
-                return menu;
-            }
-        }
-        return NO_MENU;
+        return Arrays.stream(Menu.values())
+                .filter(menu -> Objects.equals(menu.name, orderMenu))
+                .findFirst()
+                .orElse(NO_MENU);
     }
 
     public static String getMenuName(String promotion, int count) {
@@ -52,19 +49,15 @@ public enum Menu {
     }
 
     public static List<String> getOrderMenus(Map<Menu, Integer> orderMenus) {
-        List<String> getOrderMenus = new ArrayList<>();
-        for (Menu menu : orderMenus.keySet()) {
-            getOrderMenus.add(menu.name + " " + orderMenus.get(menu));
-        }
-        return getOrderMenus;
+        return orderMenus.keySet().stream()
+                .map(menu -> XmasConverter.menuData(menu.name, orderMenus.get(menu)))
+                .toList();
     }
 
     public static int getTotalOrderPrice(Map<Menu, Integer> orderMenus) {
-        int totalOrderPrice = 0;
-        for (Menu menu : orderMenus.keySet()) {
-            totalOrderPrice += menu.price * orderMenus.get(menu);
-        }
-        return totalOrderPrice;
+        return orderMenus.keySet().stream()
+                .map(menu -> menu.price * orderMenus.get(menu))
+                .reduce(0, Integer::sum);
     }
 
     public static boolean isMain(Menu orderMenu) {
