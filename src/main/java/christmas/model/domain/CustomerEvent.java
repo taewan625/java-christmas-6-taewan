@@ -8,40 +8,42 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomerEvent {
-    private Map<String, Integer> benefitDatas = new HashMap<>();
-    private Map<String, Integer> discountDatas; // 저장하지 않아도 되지만, 차후 변경사항에서 사용할 수도 있어서 분리
-    private List<Promotion> promotions;
-    private int totalDiscountPrice; // 할인 후 예상 결제 금액에 사용
-    private int totalBenefitAmount;
+    private final Map<String, Integer> benefitDatas;
+    private final Map<String, Integer> discountDatas; // 저장하지 않아도 되지만, 차후 변경사항에서 사용할 수도 있어서 분리
+    private final List<Promotion> promotions;
+    private final int totalDiscountPrice; // 할인 후 예상 결제 금액에 사용
+    private final int totalBenefitAmount;
     private final String badge;
 
     public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
         this.discountDatas = discountDatas;
         this.promotions = promotions;
-        setBenefitDatas();
-        setTotalDiscountPrice();
-        setTotalBenefitAmount();
-        badge = setBadge();
+        this.benefitDatas = setBenefitDatas();
+        this.totalDiscountPrice = setTotalDiscountPrice();
+        this.totalBenefitAmount = setTotalBenefitAmount();
+        this.badge = setBadge();
     }
 
     public int getPredictPay(int totalOrderPrice) {
         return totalOrderPrice - totalDiscountPrice;
     }
 
-    private void setBenefitDatas() {
+    private Map<String, Integer> setBenefitDatas() {
+        Map<String,Integer> benefitDatas = new HashMap<>();
         for (Promotion promotion : promotions) {
             Map<String, Integer> promotionDatas = Promotion.setPromotionDatas(promotion);
             benefitDatas.putAll(promotionDatas);
         }
         benefitDatas.putAll(discountDatas);
+        return benefitDatas;
     }
 
-    private void setTotalDiscountPrice() {
-        totalDiscountPrice = sumEventValues(discountDatas);
+    private int setTotalDiscountPrice() {
+        return sumEventValues(discountDatas);
     }
 
-    private void setTotalBenefitAmount() {
-        totalBenefitAmount = sumEventValues(benefitDatas);
+    private int setTotalBenefitAmount() {
+        return sumEventValues(benefitDatas);
     }
 
     private int sumEventValues(Map<String, Integer> datas) {
