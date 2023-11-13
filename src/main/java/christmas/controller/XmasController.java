@@ -21,19 +21,23 @@ public class XmasController {
     }
 
     private CustomerOrder book() {
+        // date
         OutputView.printInitQuestion();
         String date = InputView.reserveDate();
         Map<Menu, Integer> orderMenus = null;
         checkDate(date);
         int reservationDate = XmasConverter.StringToInt(date);
-        while (true) {
-            OutputView.print(OutputView.QUEST_ORDER);
-            String orderMenu = InputView.orderMenu();
-            if (orderMenu.equals("a")) {
-                orderMenus = XmasConverter.StringToMap(orderMenu);
-                break;
-            }
+        // menu
+        OutputView.print(OutputView.QUEST_ORDER);
+        String orderMenu = InputView.orderMenu();
+        // 검증 - 최대 20개 주문, 음료만 주문 X, 기본 숫자, 중복 안됨
+        try {
+            XmasValidator.orderMenu(orderMenu);
+        } catch (IllegalStateException | IllegalArgumentException exception) {
+            OutputView.print(exception.getMessage());
+            book();
         }
+        orderMenus = XmasConverter.StringToMap(orderMenu);
         return new CustomerOrder(reservationDate, orderMenus);
     }
 
