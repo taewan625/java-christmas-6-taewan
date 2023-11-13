@@ -3,12 +3,16 @@ package christmas.util;
 import christmas.model.domain.Menu;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class XmasConverter {
-    private static final String COMMA = ",";
-    private static final String DASH = "-";
+    private static final String FORMAT_HYPHEN = "-";
+    private static final String FORMAT_COMMA = ",";
 
     private static final String MONTH = "12월 ";
     private static final String DATE_UNIT = "일";
@@ -17,18 +21,34 @@ public class XmasConverter {
     private static final int COUNT = 1;
     private static final int TYPE = 0;
     private static final int PRICE = 1;
-    public static int StringToInt(String string) {
-        return Integer.parseInt(string);
+
+    public static Map<Menu, Integer> orders(String orders) {
+        return getOrderDatas(orders)
+                .collect(Collectors.toMap(
+                        orderData -> Menu.getMenu(orderData[MENU]),
+                        orderData -> Integer.parseInt(orderData[COUNT])
+                ));
     }
 
-    public static Map<Menu, Integer> StringToMap(String orderMenu) {
-        Map<Menu, Integer> orderMenus = new HashMap<>();
-        String[] splitOrders = orderMenu.split(COMMA);
-        for (String splitOrder : splitOrders) {
-            String[] split = splitOrder.split(DASH);
-            orderMenus.put(Menu.getMenu(split[MENU]), Integer.valueOf(split[COUNT])); // todo 분리필요: split망 역할. menu는 menu에서
-        }
-        return orderMenus;
+    public static Stream<String[]> getOrderDatas(String orders) {
+        return Arrays.stream(orders.split(FORMAT_COMMA))
+                .map(order -> order.split(FORMAT_HYPHEN));
+    }
+
+    public static Set<Menu> orderMenus(String orders) {
+        return getOrderDatas(orders, MENU)
+                .map(Menu::getMenu)
+                .collect(Collectors.toSet());
+    }
+
+    public static List<String> orderMenusCounts(String orders) {
+        return getOrderDatas(orders, COUNT)
+                .collect(Collectors.toList());
+    }
+
+    private static Stream<String> getOrderDatas(String orders, int menu) {
+        return Arrays.stream(orders.split(FORMAT_COMMA))
+                .map(order -> order.split(FORMAT_HYPHEN)[menu]);
     }
 
     public static String dateToFullDate(int date) {
