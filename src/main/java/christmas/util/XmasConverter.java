@@ -13,9 +13,10 @@ public class XmasConverter {
     private static final String MONTH = "12월 ";
     private static final String DATE_UNIT = "일";
 
-    private static final int KEY = 0;
-    private static final int VALUE = 1;
-
+    private static final int MENU = 0;
+    private static final int COUNT = 1;
+    private static final int TYPE = 0;
+    private static final int PRICE = 1;
     public static int StringToInt(String string) {
         return Integer.parseInt(string);
     }
@@ -25,7 +26,7 @@ public class XmasConverter {
         String[] splitOrders = orderMenu.split(COMMA);
         for (String splitOrder : splitOrders) {
             String[] split = splitOrder.split(DASH);
-            orderMenus.put(Menu.getMenu(split[KEY]), Integer.valueOf(split[VALUE])); // todo 분리필요: split망 역할. menu는 menu에서
+            orderMenus.put(Menu.getMenu(split[MENU]), Integer.valueOf(split[COUNT])); // todo 분리필요: split망 역할. menu는 menu에서
         }
         return orderMenus;
     }
@@ -46,6 +47,6 @@ public class XmasConverter {
 
     public static String benefitData(String discountData) {
         String[] discountDatas = discountData.split("=");
-        return discountDatas[KEY] + ": " + toMinusWon(Integer.parseInt(discountDatas[VALUE]));
+        return discountDatas[TYPE] + ": " + toMinusWon(Integer.parseInt(discountDatas[PRICE]));
     }
 }
