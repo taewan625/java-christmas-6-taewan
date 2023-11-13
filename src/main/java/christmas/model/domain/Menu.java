@@ -21,6 +21,7 @@ public enum Menu {
 
     private static final String MAIN = "main";
     private static final String DESERT = "dessert";
+    private static final String DRINK = "drink";
 
     private final String name;
     private final String type;
@@ -71,5 +72,8 @@ public enum Menu {
 
     public static boolean isDessert(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.DESERT);
+    }
+    public static boolean isDrink(Menu orderMenu) {
+        return Objects.equals(orderMenu.type, Menu.DRINK);
     }
 }
