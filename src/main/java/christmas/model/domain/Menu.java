@@ -19,10 +19,8 @@ public enum Menu {
     DRINK_2("레드와인", "drink", 60_000),
     DRINK_3("샴페인", "drink", 25_000);
 
-    private static final String APPETIZER = "appetizer";
     private static final String MAIN = "main";
     private static final String DESERT = "dessert";
-    private static final String DRINK = "drink";
 
     private final String name;
     private final String type;
