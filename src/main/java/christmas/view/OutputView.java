@@ -19,8 +19,13 @@ public class OutputView {
     public static final String UNIT = "개";
 
 
-    public static void printStaticMessage(String msg) {
+    public static void print(String msg) {
         System.out.println(msg);
+    }
+
+    public static void printInitQuestion() {
+        OutputView.print(OutputView.WELCOME_MESSAGE);
+        OutputView.print(OutputView.QUEST_BOOKING_DATE);
     }
 
     public static void printReservationFullDate(String reservationFullDate) {
