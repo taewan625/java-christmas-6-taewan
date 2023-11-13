@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public enum Menu {
+    NO_MENU("없는 메뉴", "noMenu", 0),
     APPETIZER_1("양송이수프", "appetizer", 6_000),
     APPETIZER_2("타파스", "appetizer", 5_500),
     APPETIZER_3("시저샐러드", "appetizer", 8_000),
@@ -39,7 +40,7 @@ public enum Menu {
                 return menu;
             }
         }
-        throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        return NO_MENU;
     }
 
     public static String getMenuName(String promotion, int count) {
@@ -73,6 +74,7 @@ public enum Menu {
     public static boolean isDessert(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.DESERT);
     }
+
     public static boolean isDrink(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.DRINK);
     }
