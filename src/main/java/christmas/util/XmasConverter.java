@@ -13,9 +13,11 @@ import java.util.stream.Stream;
 public class XmasConverter {
     private static final String FORMAT_HYPHEN = "-";
     private static final String FORMAT_COMMA = ",";
+    private static final String SPACE = " ";
 
     private static final String MONTH = "12월 ";
     private static final String DATE_UNIT = "일";
+    private static final String COUNT_UNIT = "개";
 
     private static final int MENU = 0;
     private static final int COUNT = 1;
@@ -68,5 +70,9 @@ public class XmasConverter {
     public static String benefitData(String discountData) {
         String[] discountDatas = discountData.split("=");
         return discountDatas[TYPE] + ": " + toMinusWon(Integer.parseInt(discountDatas[PRICE]));
+    }
+
+    public static String menuData(String name, Integer count) {
+        return name + SPACE + count + COUNT_UNIT;
     }
 }
