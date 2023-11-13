@@ -29,22 +29,4 @@ public enum Month {
     public static boolean isDiscountDate(int date, Month discountType) {
         return discountType.days.stream().anyMatch(day -> day == date);
     }
-
-    // todo: 나중에 안쓰면 제거
-    public static boolean isDDay(int date) {
-        return D_DAY.days.stream().anyMatch(day -> day == date);
-    }
-
-    public static boolean isWeekDay(int date) {
-        return WEEKDAY.days.stream().anyMatch(day -> day == date);
-    }
-
-
-    public static boolean isWeekend(int date) {
-        return WEEKEND.days.stream().anyMatch(day -> day == date);
-    }
-
-    public static boolean isStarDay(int date) {
-        return STAR_DAY.days.stream().anyMatch(day -> day == date);
-    }
 }
