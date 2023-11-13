@@ -21,32 +21,34 @@ public class XmasController {
     }
 
     private CustomerOrder book() {
-        // date
-        OutputView.printInitQuestion();
-        String date = InputView.reserveDate();
-        Map<Menu, Integer> orderMenus = null;
-        checkDate(date);
-        int reservationDate = XmasConverter.StringToInt(date);
-        // menu
-        OutputView.print(OutputView.QUEST_ORDER);
-        String orderMenu = InputView.orderMenu();
-        // 검증 - 최대 20개 주문, 음료만 주문 X, 기본 숫자, 중복 안됨
-        try {
-            XmasValidator.orderMenu(orderMenu);
-        } catch (IllegalStateException | IllegalArgumentException exception) {
-            OutputView.print(exception.getMessage());
-            book();
-        }
-        orderMenus = XmasConverter.StringToMap(orderMenu);
-        return new CustomerOrder(reservationDate, orderMenus);
+        int reservationDate = getDate();
+        Map<Menu, Integer> orders = getOrders();
+        return new CustomerOrder(reservationDate, orders);
     }
 
-    private void checkDate(String date) {
+    private Map<Menu, Integer> getOrders() {
+        OutputView.print(OutputView.QUEST_ORDER);
+        String orders = InputView.orderMenu();
+        try {
+            XmasValidator.orderMenu(orders);
+        } catch (IllegalStateException | IllegalArgumentException exception) {
+            OutputView.print(exception.getMessage());
+            getOrders();
+        }
+        System.out.println("orders = " + orders);
+        return XmasConverter.orders(orders);
+    }
+
+    // hotFix : 재귀함수를 이용해서 올바른 값을 받아오기 위해서 catch에서 return 필수
+    private int getDate() {
+        OutputView.printInitQuestion();
+        String date = InputView.reserveDate();
         try {
             XmasValidator.date(date);
+            return Integer.parseInt(date);// 올바른 값 들어올 시 try에서 바로 반환
         } catch (IllegalArgumentException | IllegalStateException e) {
             OutputView.print(e.getMessage());
-            book();
+            return getDate(); // stack이 돌아와도 올바른 값이 유지
         }
     }
 
