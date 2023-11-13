@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CustomerOrder {
-    private int reservationDate;
+    private final int reservationDate;
     private Map<Menu, Integer> orderMenus;
-    private int totalOrderPrice;
+    private final int totalOrderPrice;
 
     public CustomerOrder(int reservationDate, Map<Menu, Integer> orderMenus) {
         this.reservationDate = reservationDate;
