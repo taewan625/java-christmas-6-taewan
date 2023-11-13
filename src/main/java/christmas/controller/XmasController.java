@@ -2,6 +2,7 @@ package christmas.controller;
 
 import christmas.model.domain.*;
 import christmas.util.XmasConverter;
+import christmas.util.XmasValidator;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 
@@ -15,33 +16,41 @@ public class XmasController {
         CustomerEvent customerEvent = applyEvent(customerOrder);
         showCustomerPromotion(customerEvent);
         showCustomerEvent(customerEvent);
-        OutputView.printStaticMessage(OutputView.PAYMENT_PRICE);
-        String predictPay = customerOrder.getPredictPay(customerEvent);
-        OutputView.printStaticMessage(predictPay);
-        OutputView.printStaticMessage(OutputView.BADGE);
-        System.out.println(customerEvent.getBadge());
+        showPayment(customerOrder, customerEvent);
+        showBadge(customerEvent);
     }
 
     private CustomerOrder book() {
-        // todo. try-catch 잡기
-        OutputView.printStaticMessage(OutputView.WELCOME_MESSAGE);
-        OutputView.printStaticMessage(OutputView.QUEST_BOOKING_DATE);
-        int reservationDate = Integer.parseInt(InputView.reserveDate());
-        // todo. 검증기
-        OutputView.printStaticMessage(OutputView.QUEST_ORDER);
-        String orderMenu = InputView.orderMenu();
-        // todo. 검증기
-        Map<Menu, Integer> orderMenus = XmasConverter.StringToMap(orderMenu);
+        OutputView.printInitQuestion();
+        String date = InputView.reserveDate();
+        Map<Menu, Integer> orderMenus = null;
+        checkDate(date);
+        int reservationDate = XmasConverter.StringToInt(date);
+        while (true) {
+            OutputView.print(OutputView.QUEST_ORDER);
+            String orderMenu = InputView.orderMenu();
+            if (orderMenu.equals("a")) {
+                orderMenus = XmasConverter.StringToMap(orderMenu);
+                break;
+            }
+        }
         return new CustomerOrder(reservationDate, orderMenus);
     }
 
+    private void checkDate(String date) {
+        try {
+            XmasValidator.date(date);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            OutputView.print(e.getMessage());
+            book();
+        }
+    }
+
     private void showCustomerOrder(CustomerOrder customerOrder) {
-        String reservationFullDate = customerOrder.getReservationFullDate();
-        OutputView.printReservationFullDate(reservationFullDate);
-        List<String> orderMenus = customerOrder.getOrderMenus();
-        OutputView.printOrderMenus(orderMenus);
-        OutputView.printStaticMessage(OutputView.ORDER_PRICE);
-        OutputView.printStaticMessage(customerOrder.getTotalOrderPrice());
+        OutputView.printReservationFullDate(customerOrder.getReservationFullDate());
+        OutputView.printOrderMenus(customerOrder.getOrderMenus());
+        OutputView.print(OutputView.ORDER_PRICE);
+        OutputView.print(customerOrder.getTotalOrderPrice());
     }
 
     private CustomerEvent applyEvent(CustomerOrder customerOrder) {
@@ -51,7 +60,7 @@ public class XmasController {
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
-        OutputView.printStaticMessage(OutputView.PROMOTION_MENU);
+        OutputView.print(OutputView.PROMOTION_MENU);
 
         String promotionValue = OutputView.NONE;
 
@@ -60,19 +69,30 @@ public class XmasController {
             promotionValue = promotionMenuData + OutputView.UNIT;
         }
 
-        OutputView.printStaticMessage(promotionValue);
+        OutputView.print(promotionValue);
     }
 
     private void showCustomerEvent(CustomerEvent customerEvent) {
-        OutputView.printStaticMessage(OutputView.EVENT_HISTORY);
+        OutputView.print(OutputView.EVENT_HISTORY);
         if (!customerEvent.isBenefitDatas()) {
-            OutputView.printStaticMessage(OutputView.NONE);
+            OutputView.print(OutputView.NONE);
         }
         if (customerEvent.isBenefitDatas()) {
             List<String> benefitData = customerEvent.getBenefitData();
-            benefitData.stream().map(XmasConverter::benefitData).forEach(OutputView::printStaticMessage);
+            benefitData.stream().map(XmasConverter::benefitData).forEach(OutputView::print);
         }
-        OutputView.printStaticMessage(OutputView.TOTAL_EVENT_PRICE);
-        OutputView.printStaticMessage(customerEvent.getTotalBenefit());
+        OutputView.print(OutputView.TOTAL_EVENT_PRICE);
+        OutputView.print(customerEvent.getTotalBenefit());
+    }
+
+    private static void showBadge(CustomerEvent customerEvent) {
+        OutputView.print(OutputView.BADGE);
+        System.out.println(customerEvent.getBadge());
+    }
+
+    private static void showPayment(CustomerOrder customerOrder, CustomerEvent customerEvent) {
+        OutputView.print(OutputView.PAYMENT_PRICE);
+        String predictPay = customerOrder.getPredictPay(customerEvent);
+        OutputView.print(predictPay);
     }
 }
