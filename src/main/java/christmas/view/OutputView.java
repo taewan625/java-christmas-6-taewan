@@ -34,8 +34,11 @@ public class OutputView {
 
     public static void printOrderMenus(List<String> orderMenus) {
         System.out.println(ORDER_MENU);
-        for (String orderMenu : orderMenus) {
-            System.out.println(orderMenu + UNIT);
-        }
+        orderMenus.forEach(System.out::println);
+    }
+
+    public static void printOrderMenusPrice(String totalOrderPrice) {
+        OutputView.print(OutputView.ORDER_PRICE);
+        OutputView.print(totalOrderPrice);
     }
 }
