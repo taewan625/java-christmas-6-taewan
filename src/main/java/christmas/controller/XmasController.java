@@ -8,6 +8,7 @@ import christmas.view.OutputView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class XmasController {
     public void run() {
@@ -30,13 +31,13 @@ public class XmasController {
         OutputView.print(OutputView.QUEST_ORDER);
         String orders = InputView.orderMenu();
         try {
-            XmasValidator.orderMenu(orders);
+            XmasValidator.formatCheck(XmasConverter.getOrderDatas(orders));
+            XmasValidator.orderMenu(XmasConverter.orderMenus(orders), XmasConverter.orderMenusCounts(orders));
+            return XmasConverter.orders(orders);
         } catch (IllegalStateException | IllegalArgumentException exception) {
             OutputView.print(exception.getMessage());
-            getOrders();
+            return getOrders();
         }
-        System.out.println("orders = " + orders);
-        return XmasConverter.orders(orders);
     }
 
     // hotFix : 재귀함수를 이용해서 올바른 값을 받아오기 위해서 catch에서 return 필수
