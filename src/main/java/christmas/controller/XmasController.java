@@ -8,7 +8,6 @@ import christmas.view.OutputView;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class XmasController {
     public void run() {
@@ -56,8 +55,7 @@ public class XmasController {
     private void showCustomerOrder(CustomerOrder customerOrder) {
         OutputView.printReservationFullDate(customerOrder.getReservationFullDate());
         OutputView.printOrderMenus(customerOrder.getOrderMenus());
-        OutputView.print(OutputView.ORDER_PRICE);
-        OutputView.print(customerOrder.getTotalOrderPrice());
+        OutputView.printOrderMenusPrice(customerOrder.getTotalOrderPrice());
     }
 
     private CustomerEvent applyEvent(CustomerOrder customerOrder) {
