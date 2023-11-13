@@ -2,8 +2,12 @@ package christmas.util;
 
 import christmas.model.domain.Menu;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
+
 
 public class XmasValidator {
     private static final String ERROR_MESSAGE = "[ERROR] ";
@@ -11,43 +15,35 @@ public class XmasValidator {
     private static final String ERROR_ORDER = "유효하지 않은 주문입니다. 다시 입력해 주세요.";
     private static final String FORMAT_HYPHEN = "-";
     private static final String FORMAT_COMMA = ",";
-    private static final int MENU = 0;
-    private static final int COUNT = 1;
-    private static final int MAX_ORDER = 20;
+    private static final int MAX_ORDER_COUNT = 20;
     private static final int MAX_DATE = 31;
+    private static final int DATA_COUNT = 2;
 
 
-    public static void orderMenu(String orders) {
-        List<String> rawMenus = new ArrayList<>();
-        List<String> counts = new ArrayList<>();
-
-        for (String order : orders.split(FORMAT_COMMA)) {
-            String[] orderData = order.split(FORMAT_HYPHEN);
-            rawMenus.add(orderData[MENU]);
-            counts.add(orderData[COUNT]);
-        }
-        //0.없는 형식
-        if (rawMenus.size() != counts.size()) {
+    public static void formatCheck(Stream<String[]> orderDatas) {
+        if (orderDatas.anyMatch(orderData -> orderData.length != DATA_COUNT)) {
             illegalState(ERROR_ORDER);
         }
-        //1.숫자, 1이상 20이하
-        for (String rawCount : counts) {
-            count(rawCount);
-        }
-        //2. 최대 20개
-        int allCount = counts.stream().mapToInt(Integer::parseInt).reduce(0, Integer::sum);
-        if (allCount > MAX_ORDER) {
+    }
+
+    public static void orderMenu(Set<Menu> orderMenus, List<String> orderMenusCounts) {
+        orderMenusCounts.forEach(XmasValidator::orderMenusCount);
+        maxOrderMenuCount(orderMenusCounts);
+
+        if (orderMenus.size() != orderMenusCounts.size()) {
             illegalState(ERROR_ORDER);
         }
-        //4. 없는 메뉴
-        List<Menu> menus = rawMenus.stream().map(Menu::getMenu).toList();
-        //3. 음료만 주문
-        boolean onlyDrink = rawMenus.stream().allMatch(menu -> Menu.isDrink(Menu.getMenu(menu)));
-        if (onlyDrink) {
+        if (orderMenus.stream().anyMatch(menu -> menu == Menu.NO_MENU)) {
+            illegalState(ERROR_ORDER);
+        }
+        if (orderMenus.stream().allMatch(Menu::isDrink)) {
             illegalArgument(ERROR_ORDER);
         }
-        //5. 중복
-        if (menus.stream().distinct().count() != menus.size()) {
+    }
+
+    private static void maxOrderMenuCount(Collection<String> orderMenuCounts) {
+        int allCount = orderMenuCounts.stream().mapToInt(Integer::parseInt).reduce(0, Integer::sum);
+        if (allCount > XmasValidator.MAX_ORDER_COUNT) {
             illegalState(ERROR_ORDER);
         }
     }
@@ -56,8 +52,8 @@ public class XmasValidator {
         naturalNumberMaxRange(date, MAX_DATE, ERROR_DATE);
     }
 
-    private static void count(String count) {
-        naturalNumberMaxRange(count, MAX_ORDER, ERROR_ORDER);
+    private static void orderMenusCount(String count) {
+        naturalNumberMaxRange(count, MAX_ORDER_COUNT, ERROR_ORDER);
     }
 
     private static void naturalNumberMaxRange(String rawNumber, int max, String errorMsg) {
