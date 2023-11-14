@@ -24,12 +24,12 @@ class BadgeTest {
         int treePointMax = 19_999;
         int santaPointMin = 20_000;
         for (int i = 0; i < 100; i++) {
-            assertThat(Badge.getBadge(notEnoughPoint)).isSameAs(null);
-            assertThat(Badge.getBadge(starPointMin)).isSameAs(Badge.STAR);
-            assertThat(Badge.getBadge(starPointMax)).isSameAs(Badge.STAR);
-            assertThat(Badge.getBadge(treePointMin)).isSameAs(Badge.TREE);
-            assertThat(Badge.getBadge(treePointMax)).isSameAs(Badge.TREE);
-            assertThat(Badge.getBadge(santaPointMin)).isSameAs(Badge.SANTA);
+            assertThat(Badge.getEventBadgeName(notEnoughPoint)).isSameAs("");
+            assertThat(Badge.getEventBadgeName(starPointMin)).isSameAs("별");
+            assertThat(Badge.getEventBadgeName(starPointMax)).isSameAs("별");
+            assertThat(Badge.getEventBadgeName(treePointMin)).isSameAs("트리");
+            assertThat(Badge.getEventBadgeName(treePointMax)).isSameAs("트리");
+            assertThat(Badge.getEventBadgeName(santaPointMin)).isSameAs("산타");
         }
     }
 }
