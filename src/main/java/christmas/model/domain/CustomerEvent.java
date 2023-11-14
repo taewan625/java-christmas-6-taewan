@@ -61,9 +61,8 @@ public class CustomerEvent {
         return Badge.getBadge(totalBenefitAmount); // todo. 고민
     }
 
-    public String getPromotionProduct() {
-        // promotion 종류가 1개기 때문에 값을 바로 가져 옴
-        return Promotion.getPromotionProduct(promotions.get(0));
+    public List<String> getPromotionProducts() {
+        return promotions.stream().map(Promotion::getPromotionProduct).toList();
     }
 
     public List<String> getBenefitData() {
@@ -75,10 +74,6 @@ public class CustomerEvent {
 
     public String getTotalBenefit() {
         return XmasConverter.toMinusWon(totalBenefitAmount);
-    }
-
-    public boolean isPromotionDatas() {
-        return !promotions.isEmpty();
     }
 
     public boolean isBenefitDatas() {
