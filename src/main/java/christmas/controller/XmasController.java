@@ -27,6 +27,7 @@ public class XmasController {
     }
 
     private Map<Menu, Integer> getOrders() {
+        // todo. menu <-> xmasconverter 양방향 안되도록
         OutputView.print(OutputView.QUEST_ORDER);
         String orders = InputView.orderMenu();
         try {
@@ -65,11 +66,13 @@ public class XmasController {
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
-        List<String> promotionMenuData = customerEvent.getPromotionProducts();
+        List<String> promotionMenuData = customerEvent.getPromotionProducts(); // todo
+        // todo. XmasConverter(space, 개) 달려야함.
         OutputView.showPromotionMenuData(promotionMenuData);
     }
 
     private void showCustomerEvent(CustomerEvent customerEvent) {
+        // todo. 값을 받을 때 entrySet 자체를 받아서, XmasConverter로 key와 value 각각 XmasConverter 해서 받아오면 안되나?
         List<String> benefitData = customerEvent.getBenefitData()
                 .stream()
                 .map(XmasConverter::benefitData).toList();
