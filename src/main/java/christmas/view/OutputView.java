@@ -16,7 +16,6 @@ public class OutputView {
     public static final String PAYMENT_PRICE = "\n<할인 후 예상 결제 금액>";
     public static final String BADGE = "\n<12월 이벤트 배지>";
     public static final String NONE = "없음";
-    public static final String UNIT = "개";
 
 
     public static void print(String msg) {
@@ -34,11 +33,19 @@ public class OutputView {
 
     public static void printOrderMenus(List<String> orderMenus) {
         System.out.println(ORDER_MENU);
-        orderMenus.forEach(System.out::println);
+        orderMenus.forEach(OutputView::print);
     }
 
     public static void printOrderMenusPrice(String totalOrderPrice) {
         OutputView.print(OutputView.ORDER_PRICE);
         OutputView.print(totalOrderPrice);
+    }
+
+    public static void showPromotionMenuData(List<String> promotionMenuData) {
+        OutputView.print(OutputView.PROMOTION_MENU);
+        if (promotionMenuData.isEmpty()){
+            OutputView.print(OutputView.NONE);
+        }
+        promotionMenuData.forEach(OutputView::print);
     }
 }
