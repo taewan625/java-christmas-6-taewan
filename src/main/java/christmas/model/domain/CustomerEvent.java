@@ -73,6 +73,9 @@ public class CustomerEvent {
     }
 
     public String getTotalBenefit() {
+        if (totalBenefitAmount == 0){
+            return XmasConverter.toWon(totalBenefitAmount);
+        }
         return XmasConverter.toMinusWon(totalBenefitAmount);
     }
 
