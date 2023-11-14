@@ -12,6 +12,7 @@ public class CustomerEvent {
     private final List<Promotion> promotions;
     private final int totalDiscountPrice;
     private final int totalBenefitAmount;
+    private final String badge;
 
     public CustomerEvent() {
         this.discountDatas = new HashMap<>();
@@ -19,13 +20,16 @@ public class CustomerEvent {
         this.benefitDatas = new HashMap<>();
         this.totalDiscountPrice = 0;
         this.totalBenefitAmount = 0;
+        this.badge = "";
     }
+
     public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
         this.discountDatas = discountDatas;
         this.promotions = promotions;
         this.benefitDatas = setBenefitDatas();
         this.totalDiscountPrice = setTotalDiscountPrice();
         this.totalBenefitAmount = setTotalBenefitAmount();
+        this.badge = setBadge();
     }
 
     public int getPredictPay(int totalOrderPrice) {
@@ -33,7 +37,7 @@ public class CustomerEvent {
     }
 
     private Map<String, Integer> setBenefitDatas() {
-         return Stream.concat(promotions.stream().flatMap(
+        return Stream.concat(promotions.stream().flatMap(
                                 promotion -> Promotion.setPromotionDatas(promotion).entrySet().stream()),
                         discountDatas.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -51,8 +55,12 @@ public class CustomerEvent {
         return datas.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    public String getBadge() {
+    private String setBadge() {
         return Badge.getEventBadgeName(totalBenefitAmount);
+    }
+
+    public String getBadge() {
+        return this.badge;
     }
 
     public List<String> getPromotionProducts() {
@@ -67,7 +75,7 @@ public class CustomerEvent {
     }
 
     public String getTotalBenefit() {
-        if (totalBenefitAmount == 0){
+        if (totalBenefitAmount == 0) {
             return XmasConverter.toWon(totalBenefitAmount);
         }
         return XmasConverter.toMinusWon(totalBenefitAmount);
