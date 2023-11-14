@@ -73,18 +73,19 @@ public class XmasController {
         List<String> benefitData = customerEvent.getBenefitData()
                 .stream()
                 .map(XmasConverter::benefitData).toList();
+
         OutputView.showEventBenefitData(benefitData);
         OutputView.showEventBenefitPrice(customerEvent.getTotalBenefit());
-    }
-
-    private static void showBadge(CustomerEvent customerEvent) {
-        OutputView.print(OutputView.BADGE);
-        System.out.println(customerEvent.getBadge());
     }
 
     private static void showPayment(CustomerOrder customerOrder, CustomerEvent customerEvent) {
         OutputView.print(OutputView.PAYMENT_PRICE);
         String predictPay = customerOrder.getPredictPay(customerEvent);
         OutputView.print(predictPay);
+    }
+
+    private static void showBadge(CustomerEvent customerEvent) {
+        OutputView.print(OutputView.BADGE);
+        System.out.println(customerEvent.getBadge());
     }
 }
