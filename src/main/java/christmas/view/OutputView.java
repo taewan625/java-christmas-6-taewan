@@ -43,14 +43,15 @@ public class OutputView {
 
     public static void showPromotionMenuData(List<String> promotionMenuData) {
         OutputView.print(OutputView.PROMOTION_MENU);
-        if (promotionMenuData.isEmpty()){
+        if (promotionMenuData.isEmpty()) {
             OutputView.print(OutputView.NONE);
         }
         promotionMenuData.forEach(OutputView::print);
     }
+
     public static void showEventBenefitData(List<String> benefitData) {
         OutputView.print(OutputView.EVENT_HISTORY);
-        if (benefitData.isEmpty()){
+        if (benefitData.isEmpty()) {
             OutputView.print(OutputView.NONE);
         }
         benefitData.forEach(OutputView::print);
@@ -59,5 +60,10 @@ public class OutputView {
     public static void showEventBenefitPrice(String customerEvent) {
         OutputView.print(OutputView.TOTAL_EVENT_PRICE);
         OutputView.print(customerEvent);
+    }
+
+    public static void showBadge(String badge) {
+        OutputView.print(OutputView.BADGE);
+        OutputView.print(badge);
     }
 }
