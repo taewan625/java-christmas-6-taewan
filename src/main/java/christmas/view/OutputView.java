@@ -48,4 +48,16 @@ public class OutputView {
         }
         promotionMenuData.forEach(OutputView::print);
     }
+    public static void showEventBenefitData(List<String> benefitData) {
+        OutputView.print(OutputView.EVENT_HISTORY);
+        if (benefitData.isEmpty()){
+            OutputView.print(OutputView.NONE);
+        }
+        benefitData.forEach(OutputView::print);
+    }
+
+    public static void showEventBenefitPrice(String customerEvent) {
+        OutputView.print(OutputView.TOTAL_EVENT_PRICE);
+        OutputView.print(customerEvent);
+    }
 }
