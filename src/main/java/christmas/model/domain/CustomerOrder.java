@@ -3,14 +3,15 @@ package christmas.model.domain;
 import christmas.util.XmasConverter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CustomerOrder {
     private final int reservationDate;
-    private Map<Menu, Integer> orderMenus;
+    private final Map<Menu, Integer> orderMenus;
     private final int totalOrderPrice;
+    private final int EVENT_MIN_PRICE = 10_000;
 
     public CustomerOrder(int reservationDate, Map<Menu, Integer> orderMenus) {
         this.reservationDate = reservationDate;
@@ -27,20 +28,17 @@ public class CustomerOrder {
     }
 
     public Map<String, Integer> getDiscountDatas() {
-        Map<String, Integer> discountDatas = new HashMap<>();
-        List<String> discounts = Month.applyDiscountByDate(reservationDate);
-        for (String discount : discounts) {
-            Map<String, Integer> discountData = Discount.applyDiscount(discount, reservationDate, orderMenus);
-            discountDatas.putAll(discountData);
-        }
-        return discountDatas;
+        return Month.applyDiscountByDate(reservationDate).stream()
+                .map(discount -> Discount.applyDiscount(discount, reservationDate, orderMenus))
+                .flatMap(discountData -> discountData.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public List<Promotion> getPromotionData() {
         if (Promotion.isPromotion(totalOrderPrice)) {
             return List.of(Promotion.DRINK_3);
         }
-        return new ArrayList<>(); // todo. 나중에 없음 같은거 고민 필요
+        return new ArrayList<>();
     }
 
     private int totalOrderPrice() {
@@ -53,5 +51,9 @@ public class CustomerOrder {
     public String getPredictPay(CustomerEvent customerEvent) {
         int predictPay = customerEvent.getPredictPay(totalOrderPrice);
         return XmasConverter.toWon(predictPay);
+    }
+
+    public boolean isEventApplicable() {
+        return totalOrderPrice >= EVENT_MIN_PRICE;
     }
 }
