@@ -69,17 +69,12 @@ public class XmasController {
         OutputView.showPromotionMenuData(promotionMenuData);
     }
 
-    private void showCustomerEvent(CustomerEvent customerEvent) {
-        OutputView.print(OutputView.EVENT_HISTORY);
-        if (!customerEvent.isBenefitDatas()) {
-            OutputView.print(OutputView.NONE);
-        }
-        if (customerEvent.isBenefitDatas()) {
-            List<String> benefitData = customerEvent.getBenefitData();
-            benefitData.stream().map(XmasConverter::benefitData).forEach(OutputView::print);
-        }
-        OutputView.print(OutputView.TOTAL_EVENT_PRICE);
-        OutputView.print(customerEvent.getTotalBenefit());
+    private void showCustomerEvent(CustomerEvent customerEvent) { // 이거 해야됨.
+        List<String> benefitData = customerEvent.getBenefitData()
+                .stream()
+                .map(XmasConverter::benefitData).toList();
+        OutputView.showEventBenefitData(benefitData);
+        OutputView.showEventBenefitPrice(customerEvent.getTotalBenefit());
     }
 
     private static void showBadge(CustomerEvent customerEvent) {
