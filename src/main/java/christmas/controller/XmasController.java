@@ -39,16 +39,15 @@ public class XmasController {
         }
     }
 
-    // hotFix : 재귀함수를 이용해서 올바른 값을 받아오기 위해서 catch에서 return 필수
     private int getDate() {
         OutputView.printInitQuestion();
         String date = InputView.reserveDate();
         try {
             XmasValidator.date(date);
-            return Integer.parseInt(date);// 올바른 값 들어올 시 try에서 바로 반환
+            return Integer.parseInt(date);
         } catch (IllegalArgumentException | IllegalStateException e) {
             OutputView.print(e.getMessage());
-            return getDate(); // stack이 돌아와도 올바른 값이 유지
+            return getDate();
         }
     }
 
@@ -59,16 +58,15 @@ public class XmasController {
     }
 
     private CustomerEvent applyEvent(CustomerOrder customerOrder) {
-        Map<String, Integer> discountDatas = customerOrder.getDiscountDatas();
-        List<Promotion> promotionDatas = customerOrder.getPromotionData();
-        return new CustomerEvent(discountDatas, promotionDatas);
+        if (customerOrder.isEventApplicable()) {
+            return new CustomerEvent(customerOrder.getDiscountDatas(), customerOrder.getPromotionData());
+        }
+        return new CustomerEvent(); // todo. badge "없음" 고민
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
         OutputView.print(OutputView.PROMOTION_MENU);
-
         String promotionValue = OutputView.NONE;
-
         if (customerEvent.isPromotionDatas()) {
             String promotionMenuData = customerEvent.getPromotionProduct();
             promotionValue = promotionMenuData + OutputView.UNIT;
