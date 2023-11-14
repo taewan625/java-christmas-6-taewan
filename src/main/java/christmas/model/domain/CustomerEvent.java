@@ -2,10 +2,7 @@ package christmas.model.domain;
 
 import christmas.util.XmasConverter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,7 +12,6 @@ public class CustomerEvent {
     private final List<Promotion> promotions;
     private final int totalDiscountPrice;
     private final int totalBenefitAmount;
-    private final String badge; // todo. 고민
 
     public CustomerEvent() {
         this.discountDatas = new HashMap<>();
@@ -23,7 +19,6 @@ public class CustomerEvent {
         this.benefitDatas = new HashMap<>();
         this.totalDiscountPrice = 0;
         this.totalBenefitAmount = 0;
-        this.badge = "없음"; // todo. 고민
     }
     public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
         this.discountDatas = discountDatas;
@@ -31,7 +26,6 @@ public class CustomerEvent {
         this.benefitDatas = setBenefitDatas();
         this.totalDiscountPrice = setTotalDiscountPrice();
         this.totalBenefitAmount = setTotalBenefitAmount();
-        this.badge = setBadge();
     }
 
     public int getPredictPay(int totalOrderPrice) {
@@ -57,8 +51,8 @@ public class CustomerEvent {
         return datas.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    private String setBadge() {
-        return Badge.getBadge(totalBenefitAmount); // todo. 고민
+    public String getBadge() {
+        return Badge.getEventBadgeName(totalBenefitAmount);
     }
 
     public List<String> getPromotionProducts() {
@@ -77,9 +71,5 @@ public class CustomerEvent {
             return XmasConverter.toWon(totalBenefitAmount);
         }
         return XmasConverter.toMinusWon(totalBenefitAmount);
-    }
-
-    public String getBadge() {
-        return badge;
     }
 }
