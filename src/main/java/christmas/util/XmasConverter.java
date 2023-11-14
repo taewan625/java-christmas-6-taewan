@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 public class XmasConverter {
     private static final String FORMAT_HYPHEN = "-";
     private static final String FORMAT_COMMA = ",";
+    private static final String FORMAT_EQUAL = "=";
+    private static final String FORMAT_COLON = ":";
     private static final String SPACE = " ";
 
     private static final String MONTH = "12월 ";
@@ -68,8 +70,8 @@ public class XmasConverter {
     }
 
     public static String benefitData(String discountData) {
-        String[] discountDatas = discountData.split("=");
-        return discountDatas[TYPE] + ": " + toMinusWon(Integer.parseInt(discountDatas[PRICE]));
+        String[] discountDatas = discountData.split(FORMAT_EQUAL);
+        return discountDatas[TYPE] + FORMAT_COLON + SPACE + toMinusWon(Integer.parseInt(discountDatas[PRICE]));
     }
 
     public static String menuData(String name, Integer count) {
