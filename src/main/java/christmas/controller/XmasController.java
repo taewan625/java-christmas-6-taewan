@@ -65,14 +65,8 @@ public class XmasController {
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
-        OutputView.print(OutputView.PROMOTION_MENU);
-        String promotionValue = OutputView.NONE;
-        if (customerEvent.isPromotionDatas()) {
-            String promotionMenuData = customerEvent.getPromotionProduct();
-            promotionValue = promotionMenuData + OutputView.UNIT;
-        }
-
-        OutputView.print(promotionValue);
+        List<String> promotionMenuData = customerEvent.getPromotionProducts();
+        OutputView.showPromotionMenuData(promotionMenuData);
     }
 
     private void showCustomerEvent(CustomerEvent customerEvent) {
