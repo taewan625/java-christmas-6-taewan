@@ -9,7 +9,6 @@ public enum Badge {
     SANTA(20_000, "산타");
 
     private static final int MIN_EVENT_POINT = 5000;
-    private static final String NONE = "없음";
 
     private final int eventPoint;
     private final String name;
@@ -28,6 +27,6 @@ public enum Badge {
                 .filter(badge -> badge.eventPoint <= eventPoint)
                 .max(Comparator.comparingInt(badge -> badge.eventPoint))
                 .map(badge -> badge.name)
-                .orElse(NONE);
+                .orElse("");
     }
 }
