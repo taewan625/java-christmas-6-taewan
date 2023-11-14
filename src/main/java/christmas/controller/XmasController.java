@@ -61,7 +61,7 @@ public class XmasController {
         if (customerOrder.isEventApplicable()) {
             return new CustomerEvent(customerOrder.getDiscountDatas(), customerOrder.getPromotionData());
         }
-        return new CustomerEvent(); // todo. badge "없음" 고민
+        return new CustomerEvent();
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
@@ -84,7 +84,6 @@ public class XmasController {
     }
 
     private static void showBadge(CustomerEvent customerEvent) {
-        OutputView.print(OutputView.BADGE);
-        System.out.println(customerEvent.getBadge());
+        OutputView.showBadge(customerEvent.getBadge());
     }
 }
