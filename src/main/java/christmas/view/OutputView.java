@@ -23,8 +23,8 @@ public class OutputView {
     }
 
     public static void printInitQuestion() {
-        OutputView.print(OutputView.WELCOME_MESSAGE);
-        OutputView.print(OutputView.QUEST_BOOKING_DATE);
+        OutputView.print(WELCOME_MESSAGE);
+        OutputView.print(QUEST_BOOKING_DATE);
     }
 
     public static void printReservationFullDate(String reservationFullDate) {
@@ -37,33 +37,36 @@ public class OutputView {
     }
 
     public static void printOrderMenusPrice(String totalOrderPrice) {
-        OutputView.print(OutputView.ORDER_PRICE);
+        OutputView.print(ORDER_PRICE);
         OutputView.print(totalOrderPrice);
     }
 
     public static void showPromotionMenuData(List<String> promotionMenuData) {
-        OutputView.print(OutputView.PROMOTION_MENU);
+        OutputView.print(PROMOTION_MENU);
         if (promotionMenuData.isEmpty()) {
-            OutputView.print(OutputView.NONE);
+            OutputView.print(NONE);
         }
         promotionMenuData.forEach(OutputView::print);
     }
 
     public static void showEventBenefitData(List<String> benefitData) {
-        OutputView.print(OutputView.EVENT_HISTORY);
+        OutputView.print(EVENT_HISTORY);
         if (benefitData.isEmpty()) {
-            OutputView.print(OutputView.NONE);
+            OutputView.print(NONE);
         }
         benefitData.forEach(OutputView::print);
     }
 
     public static void showEventBenefitPrice(String customerEvent) {
-        OutputView.print(OutputView.TOTAL_EVENT_PRICE);
+        OutputView.print(TOTAL_EVENT_PRICE);
         OutputView.print(customerEvent);
     }
 
     public static void showBadge(String badge) {
-        OutputView.print(OutputView.BADGE);
+        OutputView.print(BADGE);
+        if (badge.isEmpty()) {
+            OutputView.print(NONE);
+        }
         OutputView.print(badge);
     }
 }
