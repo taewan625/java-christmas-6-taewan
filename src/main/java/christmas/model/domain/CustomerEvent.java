@@ -76,10 +76,6 @@ public class CustomerEvent {
         return XmasConverter.toMinusWon(totalBenefitAmount);
     }
 
-    public boolean isBenefitDatas() {
-        return !benefitDatas.isEmpty();
-    }
-
     public String getBadge() {
         return badge;
     }
