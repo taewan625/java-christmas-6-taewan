@@ -2,19 +2,29 @@ package christmas.model.domain;
 
 import christmas.util.XmasConverter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CustomerEvent {
     private final Map<String, Integer> benefitDatas;
     private final Map<String, Integer> discountDatas; // 저장하지 않아도 되지만, 차후 변경사항에서 사용할 수도 있어서 분리
     private final List<Promotion> promotions;
-    private final int totalDiscountPrice; // 할인 후 예상 결제 금액에 사용
+    private final int totalDiscountPrice;
     private final int totalBenefitAmount;
-    private final String badge;
+    private final String badge; // todo. 고민
 
+    public CustomerEvent() {
+        this.discountDatas = new HashMap<>();
+        this.promotions = new ArrayList<>();
+        this.benefitDatas = new HashMap<>();
+        this.totalDiscountPrice = 0;
+        this.totalBenefitAmount = 0;
+        this.badge = "없음"; // todo. 고민
+    }
     public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
         this.discountDatas = discountDatas;
         this.promotions = promotions;
@@ -29,13 +39,10 @@ public class CustomerEvent {
     }
 
     private Map<String, Integer> setBenefitDatas() {
-        Map<String,Integer> benefitDatas = new HashMap<>();
-        for (Promotion promotion : promotions) {
-            Map<String, Integer> promotionDatas = Promotion.setPromotionDatas(promotion);
-            benefitDatas.putAll(promotionDatas);
-        }
-        benefitDatas.putAll(discountDatas);
-        return benefitDatas;
+         return Stream.concat(promotions.stream().flatMap(
+                                promotion -> Promotion.setPromotionDatas(promotion).entrySet().stream()),
+                        discountDatas.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private int setTotalDiscountPrice() {
@@ -51,7 +58,7 @@ public class CustomerEvent {
     }
 
     private String setBadge() {
-        return Badge.getBadge(totalBenefitAmount);
+        return Badge.getBadge(totalBenefitAmount); // todo. 고민
     }
 
     public String getPromotionProduct() {
