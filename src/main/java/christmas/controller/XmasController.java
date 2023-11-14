@@ -69,7 +69,7 @@ public class XmasController {
         OutputView.showPromotionMenuData(promotionMenuData);
     }
 
-    private void showCustomerEvent(CustomerEvent customerEvent) { // 이거 해야됨.
+    private void showCustomerEvent(CustomerEvent customerEvent) {
         List<String> benefitData = customerEvent.getBenefitData()
                 .stream()
                 .map(XmasConverter::benefitData).toList();
@@ -79,9 +79,8 @@ public class XmasController {
     }
 
     private static void showPayment(CustomerOrder customerOrder, CustomerEvent customerEvent) {
-        OutputView.print(OutputView.PAYMENT_PRICE);
         String predictPay = customerOrder.getPredictPay(customerEvent);
-        OutputView.print(predictPay);
+        OutputView.print(OutputView.PAYMENT_PRICE + "\n" + predictPay);
     }
 
     private static void showBadge(CustomerEvent customerEvent) {
