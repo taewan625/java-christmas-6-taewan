@@ -164,8 +164,7 @@
         - getDiscounts() : 예약일과 주문에 부합한 할인 정보 반환
             - applyDiscount(): Month를 통해 받아온 discountType을 하위 메서드에 적용
                 - dDayDiscount() : 디데일 할인 적용
-                - mainDishDiscount() : 주중 메인 디시 할인 적용
-                - dessertDiscount() : 주말 디저트 할인 적용
+                - menuTypeDiscount() : 주중 메인 디시 할인 적용 & 주말 디저트 할인 적용
                 - starDayDiscount() : 별표친날 할인 적용
     - Badge
         - isBadge()
