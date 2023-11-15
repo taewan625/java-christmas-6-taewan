@@ -33,9 +33,8 @@ class MenuTest {
 
     @Test
     void getPromotionMenuData() {
-        String promotionMenu = "DRINK_3";
-        String promotionMenuData = Menu.getPromotionMenuData(promotionMenu, 1);
-        assertThat(promotionMenuData).isEqualTo("샴페인 1");
+        Map<Promotion, Integer> promotions = Map.of(Promotion.DRINK_3, 1);
+        assertThat(Menu.getPromotionMenus(promotions)).isEqualTo(Map.of("샴페인",1));
     }
 
     @Test
