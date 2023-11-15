@@ -25,6 +25,9 @@ public enum Menu {
     private static final String DESERT = "dessert";
     private static final String DRINK = "drink";
 
+    private static final int MENU = 0;
+    private static final int COUNT = 1;
+
     private final String name;
     private final String type;
     private final int price;
@@ -48,6 +51,14 @@ public enum Menu {
                 .reduce(0, Integer::sum);
     }
 
+    public static Map<Menu, Integer> getOrderMenus(List<String[]> orderDatas) {
+        return orderDatas.stream()
+                .collect(Collectors.toMap(
+                        orderData -> Menu.getMenu(orderData[MENU]),
+                        orderData -> Integer.parseInt(orderData[COUNT])
+                ));
+    }
+
     public static Map<String, Integer> getOrderMenus(Map<Menu, Integer> orderMenus) {
         return orderMenus.entrySet().stream()
                 .collect(Collectors.toMap(
@@ -66,7 +77,6 @@ public enum Menu {
         return Menu.valueOf(promotion).price * count;
     }
 
-    // boolean
     public static boolean isMain(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.MAIN);
     }
