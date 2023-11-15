@@ -2,7 +2,6 @@ package christmas.model.domain;
 
 import christmas.util.XmasConverter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,12 +18,26 @@ public class CustomerOrder {
         this.totalOrderPrice = totalOrderPrice();
     }
 
+    // 초기화
+    private int totalOrderPrice() {
+        return Menu.getTotalOrderPrice(orderMenus);
+    }
+
+    // 사용
     public String getReservationFullDate() {
         return XmasConverter.dateToFullDate(reservationDate);
     }
 
     public List<String> getOrderMenus() {
-        return Menu.getOrderMenus(orderMenus);
+        return XmasConverter.menuData(Menu.getOrderMenus(orderMenus));
+    }
+
+    public String getTotalOrderPrice() {
+        return XmasConverter.toWon(totalOrderPrice);
+    }
+
+    public boolean isEventApplicable() {
+        return totalOrderPrice >= EVENT_MIN_PRICE;
     }
 
     public Map<String, Integer> getDiscountDatas() {
@@ -34,26 +47,12 @@ public class CustomerOrder {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public List<Promotion> getPromotionData() {
-        if (Promotion.isPromotion(totalOrderPrice)) {
-            return List.of(Promotion.DRINK_3);
-        }
-        return new ArrayList<>();
-    }
-
-    private int totalOrderPrice() {
-        return Menu.getTotalOrderPrice(orderMenus);
-    }
-    public String getTotalOrderPrice() {
-        return XmasConverter.toWon(totalOrderPrice);
+    public Map<Promotion, Integer> getPromotionData() {
+        return Promotion.isPromotion(totalOrderPrice);
     }
 
     public String getPredictPay(CustomerEvent customerEvent) {
         int predictPay = customerEvent.getPredictPay(totalOrderPrice);
         return XmasConverter.toWon(predictPay);
-    }
-
-    public boolean isEventApplicable() {
-        return totalOrderPrice >= EVENT_MIN_PRICE;
     }
 }
