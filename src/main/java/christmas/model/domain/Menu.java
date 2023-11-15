@@ -51,7 +51,7 @@ public enum Menu {
                 .reduce(0, Integer::sum);
     }
 
-    public static Map<Menu, Integer> getOrderMenus(List<String[]> orderDatas) {
+    public static Map<Menu, Integer> createOrderMenus(List<String[]> orderDatas) {
         return orderDatas.stream()
                 .collect(Collectors.toMap(
                         orderData -> Menu.getMenu(orderData[MENU]),
