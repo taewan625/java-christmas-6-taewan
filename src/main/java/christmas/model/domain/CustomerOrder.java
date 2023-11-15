@@ -4,7 +4,6 @@ import christmas.util.XmasConverter;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CustomerOrder {
     private final int reservationDate;
@@ -44,10 +43,7 @@ public class CustomerOrder {
     }
 
     private Map<String, Integer> getDiscountDatas() {
-        return Month.applyDiscountByDate(reservationDate).stream()
-                .map(discount -> Discount.applyDiscount(discount, reservationDate, orderMenus))
-                .flatMap(discountData -> discountData.entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return Discount.getDiscounts(reservationDate, orderMenus);
     }
 
     private Map<Promotion, Integer> getPromotionData() {
