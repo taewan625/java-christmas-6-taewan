@@ -5,8 +5,6 @@ import christmas.model.domain.Menu;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
-
 
 public class XmasValidator {
     private static final String ERROR_MESSAGE = "[ERROR] ";
@@ -17,19 +15,20 @@ public class XmasValidator {
     private static final int DATA_COUNT = 2;
 
 
-    public static void formatCheck(Stream<String[]> orderDatas) {
-        if (orderDatas.anyMatch(orderData -> orderData.length != DATA_COUNT)) {
+    public static List<String[]> formatCheck(List<String[]> orderDatas) {
+        if (orderDatas.stream().anyMatch(orderData -> orderData.length != DATA_COUNT)) {
             illegalState(ERROR_ORDER);
         }
+        return orderDatas;
     }
 
-    public static void orderMenu(Set<Menu> orderMenus, List<String> orderMenusCounts) {
+    public static void orderMenu(Set<String> orderMenus, List<String> orderMenusCounts) {
         // 수량 검증
         orderMenusCounts.forEach(XmasValidator::orderMenusCount);
         maxOrderMenuCount(orderMenusCounts);
         // 메뉴 검증
         if (orderMenus.size() != orderMenusCounts.size()
-                || orderMenus.stream().anyMatch(menu -> menu == Menu.NO_MENU)
+                || orderMenus.stream().anyMatch(Menu::isNotMenu)
                 || orderMenus.stream().allMatch(Menu::isDrink)) {
             illegalState(ERROR_ORDER);
         }
@@ -52,7 +51,7 @@ public class XmasValidator {
 
     private static void naturalNumberMaxRange(String rawNumber, int max, String errorMsg) {
         int number = checkNaturalNumber(rawNumber, errorMsg);
-        if (number >= max) {
+        if (number > max) {
             illegalState(errorMsg);
         }
     }
