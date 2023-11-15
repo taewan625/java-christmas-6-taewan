@@ -22,6 +22,10 @@ public enum Promotion {
         return new HashMap<>();
     }
 
+    /**
+     * @param promotions key: Promotion의 이름, value: 해당 promotion의 혜택 금액
+     * @return {증정 이벤트, 25_000}
+     */
     public static Map<String, Integer> setPromotionDatas(Map<Promotion, Integer> promotions) {
         return promotions.entrySet().stream()
                 .collect(Collectors.toMap(
