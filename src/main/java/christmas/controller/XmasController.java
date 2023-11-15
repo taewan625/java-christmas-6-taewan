@@ -44,7 +44,7 @@ public class XmasController {
         try {
             List<String[]> orderDatas = XmasValidator.formatCheck(XmasConverter.splitOrderDatas(orders));
             XmasValidator.orderMenu(XmasConverter.orderMenus(orderDatas), XmasConverter.orderMenusCounts(orderDatas));
-            return Menu.getOrderMenus(orderDatas);
+            return Menu.createOrderMenus(orderDatas);
         } catch (IllegalStateException | IllegalArgumentException exception) {
             OutputView.print(exception.getMessage());
             return getOrders();
