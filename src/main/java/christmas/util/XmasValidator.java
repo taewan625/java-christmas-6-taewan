@@ -2,7 +2,6 @@ package christmas.util;
 
 import christmas.model.domain.Menu;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +12,6 @@ public class XmasValidator {
     private static final String ERROR_MESSAGE = "[ERROR] ";
     private static final String ERROR_DATE = "유효하지 않은 날짜입니다. 다시 입력해 주세요.";
     private static final String ERROR_ORDER = "유효하지 않은 주문입니다. 다시 입력해 주세요.";
-    private static final String FORMAT_HYPHEN = "-";
-    private static final String FORMAT_COMMA = ",";
     private static final int MAX_ORDER_COUNT = 20;
     private static final int MAX_DATE = 31;
     private static final int DATA_COUNT = 2;
@@ -27,17 +24,14 @@ public class XmasValidator {
     }
 
     public static void orderMenu(Set<Menu> orderMenus, List<String> orderMenusCounts) {
+        // 수량 검증
         orderMenusCounts.forEach(XmasValidator::orderMenusCount);
         maxOrderMenuCount(orderMenusCounts);
-
-        if (orderMenus.size() != orderMenusCounts.size()) {
+        // 메뉴 검증
+        if (orderMenus.size() != orderMenusCounts.size()
+                || orderMenus.stream().anyMatch(menu -> menu == Menu.NO_MENU)
+                || orderMenus.stream().allMatch(Menu::isDrink)) {
             illegalState(ERROR_ORDER);
-        }
-        if (orderMenus.stream().anyMatch(menu -> menu == Menu.NO_MENU)) {
-            illegalState(ERROR_ORDER);
-        }
-        if (orderMenus.stream().allMatch(Menu::isDrink)) {
-            illegalArgument(ERROR_ORDER);
         }
     }
 
