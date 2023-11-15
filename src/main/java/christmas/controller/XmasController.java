@@ -42,9 +42,9 @@ public class XmasController {
         OutputView.print(OutputView.QUEST_ORDER);
         String orders = InputView.orderMenu();
         try {
-            XmasValidator.formatCheck(XmasConverter.splitOrderDatas(orders));
-            XmasValidator.orderMenu(XmasConverter.orderMenus(orders), XmasConverter.orderMenusCounts(orders));
-            return XmasConverter.orders(orders);
+            List<String[]> orderDatas = XmasValidator.formatCheck(XmasConverter.splitOrderDatas(orders));
+            XmasValidator.orderMenu(XmasConverter.orderMenus(orderDatas), XmasConverter.orderMenusCounts(orderDatas));
+            return Menu.getOrderMenus(orderDatas);
         } catch (IllegalStateException | IllegalArgumentException exception) {
             OutputView.print(exception.getMessage());
             return getOrders();
