@@ -26,20 +26,6 @@ public class XmasController {
         return new CustomerOrder(reservationDate, orders);
     }
 
-    private Map<Menu, Integer> getOrders() {
-        // todo. menu <-> xmasconverter 양방향 안되도록
-        OutputView.print(OutputView.QUEST_ORDER);
-        String orders = InputView.orderMenu();
-        try {
-            XmasValidator.formatCheck(XmasConverter.getOrderDatas(orders));
-            XmasValidator.orderMenu(XmasConverter.orderMenus(orders), XmasConverter.orderMenusCounts(orders));
-            return XmasConverter.orders(orders);
-        } catch (IllegalStateException | IllegalArgumentException exception) {
-            OutputView.print(exception.getMessage());
-            return getOrders();
-        }
-    }
-
     private int getDate() {
         OutputView.printInitQuestion();
         String date = InputView.reserveDate();
@@ -49,6 +35,19 @@ public class XmasController {
         } catch (IllegalArgumentException | IllegalStateException e) {
             OutputView.print(e.getMessage());
             return getDate();
+        }
+    }
+
+    private Map<Menu, Integer> getOrders() {
+        OutputView.print(OutputView.QUEST_ORDER);
+        String orders = InputView.orderMenu();
+        try {
+            XmasValidator.formatCheck(XmasConverter.splitOrderDatas(orders));
+            XmasValidator.orderMenu(XmasConverter.orderMenus(orders), XmasConverter.orderMenusCounts(orders));
+            return XmasConverter.orders(orders);
+        } catch (IllegalStateException | IllegalArgumentException exception) {
+            OutputView.print(exception.getMessage());
+            return getOrders();
         }
     }
 
@@ -66,13 +65,10 @@ public class XmasController {
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
-        List<String> promotionMenuData = customerEvent.getPromotionProducts(); // todo
-        // todo. XmasConverter(space, 개) 달려야함.
-        OutputView.showPromotionMenuData(promotionMenuData);
+        OutputView.showPromotionMenuData(customerEvent.getPromotionMenus());
     }
 
     private void showCustomerEvent(CustomerEvent customerEvent) {
-        // todo. 값을 받을 때 entrySet 자체를 받아서, XmasConverter로 key와 value 각각 XmasConverter 해서 받아오면 안되나?
         List<String> benefitData = customerEvent.getBenefitData()
                 .stream()
                 .map(XmasConverter::benefitData).toList();
