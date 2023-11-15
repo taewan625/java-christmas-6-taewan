@@ -36,18 +36,21 @@ public class CustomerOrder {
         return XmasConverter.toWon(totalOrderPrice);
     }
 
-    public boolean isEventApplicable() {
-        return totalOrderPrice >= EVENT_MIN_PRICE;
+    public CustomerEvent isEventApplicable() {
+        if (totalOrderPrice >= EVENT_MIN_PRICE) {
+            return new CustomerEvent(getDiscountDatas(), getPromotionData());
+        }
+        return new CustomerEvent();
     }
 
-    public Map<String, Integer> getDiscountDatas() {
+    private Map<String, Integer> getDiscountDatas() {
         return Month.applyDiscountByDate(reservationDate).stream()
                 .map(discount -> Discount.applyDiscount(discount, reservationDate, orderMenus))
                 .flatMap(discountData -> discountData.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public Map<Promotion, Integer> getPromotionData() {
+    private Map<Promotion, Integer> getPromotionData() {
         return Promotion.isPromotion(totalOrderPrice);
     }
 
