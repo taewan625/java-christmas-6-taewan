@@ -13,7 +13,7 @@ public class XmasController {
     public void run() {
         CustomerOrder customerOrder = book();
         showCustomerOrder(customerOrder);
-        CustomerEvent customerEvent = applyEvent(customerOrder);
+        CustomerEvent customerEvent = customerOrder.isEventApplicable(); // event 적용유무 결정 가능
         showCustomerPromotion(customerEvent);
         showCustomerEvent(customerEvent);
         showPayment(customerOrder, customerEvent);
@@ -55,13 +55,6 @@ public class XmasController {
         OutputView.printReservationFullDate(customerOrder.getReservationFullDate());
         OutputView.printOrderMenus(customerOrder.getOrderMenus());
         OutputView.printOrderMenusPrice(customerOrder.getTotalOrderPrice());
-    }
-
-    private CustomerEvent applyEvent(CustomerOrder customerOrder) {
-        if (customerOrder.isEventApplicable()) {
-            return new CustomerEvent(customerOrder.getDiscountDatas(), customerOrder.getPromotionData());
-        }
-        return new CustomerEvent();
     }
 
     private void showCustomerPromotion(CustomerEvent customerEvent) {
