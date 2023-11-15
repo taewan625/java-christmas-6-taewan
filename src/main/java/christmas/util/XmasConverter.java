@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class XmasConverter {
     private static final String FORMAT_HYPHEN = "-";
@@ -27,31 +26,25 @@ public class XmasConverter {
     private static final int PRICE = 1;
 
     // 검증 methods
-    public static Stream<String[]> splitOrderDatas(String orders) {
+    public static List<String[]> splitOrderDatas(String orders) {
         return Arrays.stream(orders.split(FORMAT_COMMA))
-                .map(order -> order.split(FORMAT_HYPHEN));
+                .map(order -> order.split(FORMAT_HYPHEN))
+                .toList();
     }
 
-    private static Stream<String> splitOrderDatas(String orders, int menu) {
-        return Arrays.stream(orders.split(FORMAT_COMMA))
-                .map(order -> order.split(FORMAT_HYPHEN)[menu]);
-    }
-
-
-    public static Set<Menu> orderMenus(String orders) {
-        return splitOrderDatas(orders, MENU)
-                .map(Menu::getMenu)
+    public static Set<String> orderMenus(List<String[]> orderDatas) {
+        return orderDatas.stream().map(orderData -> orderData[MENU])
                 .collect(Collectors.toSet());
     }
 
-    public static List<String> orderMenusCounts(String orders) {
-        return splitOrderDatas(orders, COUNT)
+    public static List<String> orderMenusCounts(List<String[]> orderDatas) {
+        return orderDatas.stream().map(orderData -> orderData[COUNT])
                 .collect(Collectors.toList());
     }
 
     // 수행 methods
     public static Map<Menu, Integer> orders(String orders) {
-        return splitOrderDatas(orders)
+        return splitOrderDatas(orders).stream()
                 .collect(Collectors.toMap(
                         orderData -> Menu.getMenu(orderData[MENU]),
                         orderData -> Integer.parseInt(orderData[COUNT])
