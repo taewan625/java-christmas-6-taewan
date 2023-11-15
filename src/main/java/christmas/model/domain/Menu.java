@@ -1,6 +1,7 @@
 package christmas.model.domain;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -74,7 +75,14 @@ public enum Menu {
         return Objects.equals(orderMenu.type, Menu.DESERT);
     }
 
-    public static boolean isDrink(Menu orderMenu) {
-        return Objects.equals(orderMenu.type, Menu.DRINK);
+    public static boolean isDrink(String orderMenu) {
+        List<Menu> drinks = Arrays.stream(Menu.values())
+                .filter(menu -> Objects.equals(menu.type, DRINK)).toList();
+        return drinks.stream().anyMatch(drink -> Objects.equals(drink.name, orderMenu));
+    }
+
+    public static boolean isNotMenu(String orderMenu) {
+        return Arrays.stream(Menu.values())
+                .noneMatch(menu -> Objects.equals(menu.name, orderMenu));
     }
 }
