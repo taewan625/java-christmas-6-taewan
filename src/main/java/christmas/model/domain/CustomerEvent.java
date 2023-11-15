@@ -8,22 +8,25 @@ import java.util.stream.Stream;
 
 public class CustomerEvent {
     private final Map<String, Integer> benefitDatas;
-    private final Map<String, Integer> discountDatas; // 저장하지 않아도 되지만, 차후 변경사항에서 사용할 수도 있어서 분리
-    private final List<Promotion> promotions;
+
+    // key를 Discount로 받아도 되지만 Discount를 받아서 사용하는 목적이 없기 때문에 정제된 값을 받는 것이 초기화 시, 유용
+    private final Map<String, Integer> discountDatas;
+
+    private final Map<Promotion, Integer> promotions;
     private final int totalDiscountPrice;
     private final int totalBenefitAmount;
     private final String badge;
 
     public CustomerEvent() {
         this.discountDatas = new HashMap<>();
-        this.promotions = new ArrayList<>();
+        this.promotions = new HashMap<>();
         this.benefitDatas = new HashMap<>();
         this.totalDiscountPrice = 0;
         this.totalBenefitAmount = 0;
         this.badge = "";
     }
 
-    public CustomerEvent(Map<String, Integer> discountDatas, List<Promotion> promotions) {
+    public CustomerEvent(Map<String, Integer> discountDatas, Map<Promotion, Integer> promotions) {
         this.discountDatas = discountDatas;
         this.promotions = promotions;
         this.benefitDatas = setBenefitDatas();
@@ -32,13 +35,9 @@ public class CustomerEvent {
         this.badge = setBadge();
     }
 
-    public int getPredictPay(int totalOrderPrice) {
-        return totalOrderPrice - totalDiscountPrice;
-    }
-
+    // 초기화
     private Map<String, Integer> setBenefitDatas() {
-        return Stream.concat(promotions.stream().flatMap(
-                                promotion -> Promotion.setPromotionDatas(promotion).entrySet().stream()),
+        return Stream.concat(Promotion.setPromotionDatas(promotions).entrySet().stream(),
                         discountDatas.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
@@ -51,20 +50,17 @@ public class CustomerEvent {
         return sumEventValues(benefitDatas);
     }
 
-    private int sumEventValues(Map<String, Integer> datas) {
-        return datas.values().stream().mapToInt(Integer::intValue).sum();
-    }
-
     private String setBadge() {
         return Badge.getEventBadgeName(totalBenefitAmount);
     }
 
-    public String getBadge() {
-        return this.badge;
+    private int sumEventValues(Map<String, Integer> datas) {
+        return datas.values().stream().mapToInt(Integer::intValue).sum();
     }
 
-    public List<String> getPromotionProducts() {
-        return promotions.stream().map(Promotion::getPromotionProduct).toList();
+    // 사용
+    public List<String> getPromotionMenus() {
+        return XmasConverter.menuData(Menu.getPromotionMenus(promotions));
     }
 
     public List<String> getBenefitData() {
@@ -75,9 +71,14 @@ public class CustomerEvent {
     }
 
     public String getTotalBenefit() {
-        if (totalBenefitAmount == 0) {
-            return XmasConverter.toWon(totalBenefitAmount);
-        }
         return XmasConverter.toMinusWon(totalBenefitAmount);
+    }
+
+    public int getPredictPay(int totalOrderPrice) {
+        return totalOrderPrice - totalDiscountPrice;
+    }
+
+    public String getBadge() {
+        return this.badge;
     }
 }
