@@ -1,46 +1,109 @@
 package christmas.model.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static christmas.model.domain.Menu.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MenuTest {
 
-    Menu[] mainMenu = {Menu.MAIN_1, Menu.MAIN_2, Menu.MAIN_3, Menu.MAIN_4};
-    Menu[] appeMenu = {Menu.APPETIZER_1, Menu.APPETIZER_2, Menu.APPETIZER_3};
-    Menu[] drinkMenu = {Menu.DRINK_1, Menu.DRINK_2, Menu.DRINK_3};
-    Menu[] dessertMenu = {Menu.DESSERT_1, Menu.DESSERT_2};
+    Menu[] mainMenu = {MAIN_1, MAIN_2, MAIN_3, MAIN_4};
+    Menu[] appeMenu = {APPETIZER_1, APPETIZER_2, APPETIZER_3};
+    Menu[] drinkMenu = {DRINK_1, DRINK_2, DRINK_3};
+    Menu[] dessertMenu = {DESSERT_1, DESSERT_2};
+
+
+    @Test
+    void getMenu() {
+        String noMenu = "없음";
+        String allMenus = "양송이수프,타파스,시저샐러드,티본스테이크,바비큐립,해산물파스타,크리스마스파스타," +
+                "초코케이크,아이스크림,제로콜라,레드와인,샴페인";
+
+        List<Menu> menus = new ArrayList<>();
+        menus.add(Menu.getMenu(noMenu));
+        for (String menu : allMenus.split(",")) {
+            menus.add(Menu.getMenu(menu));
+        }
+        assertThat(menus).contains(values());
+    }
+
+    @Test
+    void getPromotionMenuData() {
+        String promotionMenu = "DRINK_3";
+        String promotionMenuData = Menu.getPromotionMenuData(promotionMenu, 1);
+        assertThat(promotionMenuData).isEqualTo("샴페인 1");
+    }
+
+    @Test
+    void getPromotionBenefit() {
+        String promotionMenu = "DRINK_3";
+        int count = 1;
+        int promotionBenefit = Menu.getPromotionBenefit(promotionMenu, count);
+        assertThat(promotionBenefit).isEqualTo(25000);
+    }
+
+    @Test
+    void getTotalOrderPrice() {
+        Map<Menu, Integer> orderMenus = Map.of(APPETIZER_1, 2, APPETIZER_2, 3);
+        int totalOrderPrice = Menu.getTotalOrderPrice(orderMenus);
+        assertThat(totalOrderPrice).isEqualTo(6000*2 + 5500 *3);
+    }
+
+    @Test
+    void getOrderMenus() {
+        Map<Menu, Integer> orderMenus = Map.of(APPETIZER_1, 2, APPETIZER_2, 3);
+        assertThat(Menu.getOrderMenus(orderMenus)).isEqualTo(Map.of("양송이수프",2,"타파스",3));
+    }
 
     @Test
     void isMain() {
         for (Menu main : mainMenu) {
-            Assertions.assertThat(Menu.isMain(main)).isTrue();
+            assertThat(Menu.isMain(main)).isTrue();
         }
         for (Menu appe : appeMenu) {
-            Assertions.assertThat(Menu.isMain(appe)).isFalse();
+            assertThat(Menu.isMain(appe)).isFalse();
         }
         for (Menu drink : drinkMenu) {
-            Assertions.assertThat(Menu.isMain(drink)).isFalse();
+            assertThat(Menu.isMain(drink)).isFalse();
         }
         for (Menu dessert : dessertMenu) {
-            Assertions.assertThat(Menu.isMain(dessert)).isFalse();
+            assertThat(Menu.isMain(dessert)).isFalse();
         }
     }
 
     @Test
     void isDessert() {
         for (Menu main : mainMenu) {
-            Assertions.assertThat(Menu.isDessert(main)).isFalse();
+            assertThat(Menu.isDessert(main)).isFalse();
         }
         for (Menu appe : appeMenu) {
-            Assertions.assertThat(Menu.isDessert(appe)).isFalse();
+            assertThat(Menu.isDessert(appe)).isFalse();
         }
         for (Menu drink : drinkMenu) {
-            Assertions.assertThat(Menu.isDessert(drink)).isFalse();
+            assertThat(Menu.isDessert(drink)).isFalse();
         }
         for (Menu dessert : dessertMenu) {
-            Assertions.assertThat(Menu.isDessert(dessert)).isTrue();
+            assertThat(Menu.isDessert(dessert)).isTrue();
+        }
+    }
+
+    @Test
+    void isDrink() {
+        for (Menu main : mainMenu) {
+            assertThat(Menu.isDrink(main)).isFalse();
+        }
+        for (Menu appe : appeMenu) {
+            assertThat(Menu.isDrink(appe)).isFalse();
+        }
+        for (Menu drink : drinkMenu) {
+            assertThat(Menu.isDrink(drink)).isTrue();
+        }
+        for (Menu dessert : dessertMenu) {
+            assertThat(Menu.isDrink(dessert)).isFalse();
         }
     }
 }
