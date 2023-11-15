@@ -1,9 +1,9 @@
 package christmas.model.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public enum Month {
     D_DAY(IntStream.rangeClosed(1, 25).boxed().collect(Collectors.toList())),
@@ -18,15 +18,13 @@ public enum Month {
     }
 
     public static List<String> applyDiscountByDate(int date) {
-        List<String> applyDiscountTypes = new ArrayList<>();
-        for(Month discountType : Month.values()) {
-            if (isDiscountDate(date, discountType)){
-                applyDiscountTypes.add(discountType.name());
-            }
-        }
-        return applyDiscountTypes;
+        return Stream.of(Month.values())
+                .filter(discountType -> isDiscountDate(date, discountType))
+                .map(Enum::name)
+                .toList();
     }
-    public static boolean isDiscountDate(int date, Month discountType) {
+
+    private static boolean isDiscountDate(int date, Month discountType) {
         return discountType.days.stream().anyMatch(day -> day == date);
     }
 }
