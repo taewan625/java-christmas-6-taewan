@@ -92,17 +92,9 @@ class MenuTest {
 
     @Test
     void isDrink() {
-        for (Menu main : mainMenu) {
-            assertThat(Menu.isDrink(main)).isFalse();
-        }
-        for (Menu appe : appeMenu) {
-            assertThat(Menu.isDrink(appe)).isFalse();
-        }
-        for (Menu drink : drinkMenu) {
-            assertThat(Menu.isDrink(drink)).isTrue();
-        }
-        for (Menu dessert : dessertMenu) {
-            assertThat(Menu.isDrink(dessert)).isFalse();
-        }
+            assertThat(Menu.isDrink("양송이수프")).isFalse();
+            assertThat(Menu.isDrink("시저샐러드")).isFalse();
+            assertThat(Menu.isDrink("타파스")).isFalse();
+            assertThat(Menu.isDrink("샴페인")).isTrue();
     }
 }
