@@ -1,7 +1,5 @@
 package christmas.util;
 
-import christmas.model.domain.Menu;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -43,14 +41,6 @@ public class XmasConverter {
     }
 
     // 수행 methods
-    public static Map<Menu, Integer> orders(String orders) {
-        return splitOrderDatas(orders).stream()
-                .collect(Collectors.toMap(
-                        orderData -> Menu.getMenu(orderData[MENU]),
-                        orderData -> Integer.parseInt(orderData[COUNT])
-                ));
-    }
-
     public static String dateToFullDate(int date) {
         return MONTH + date + DATE_UNIT;
     }
