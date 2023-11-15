@@ -2,6 +2,7 @@ package christmas.model.domain;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public enum Discount {
@@ -33,10 +34,10 @@ public enum Discount {
             return Discount.dDayDiscount(date, discountType);
         }
         if (discountType == WEEKDAY) {
-            return Discount.mainDishDiscount(orderMenu, discountType);
+            return Discount.menuTypeDiscount(orderMenu, discountType, Menu::isMain);
         }
         if (discountType == WEEKEND) {
-            return Discount.dessertDiscount(orderMenu, discountType);
+            return Discount.menuTypeDiscount(orderMenu, discountType, Menu::isDessert);
         }
         return Discount.starDayDiscount(discountType);
     }
@@ -46,24 +47,12 @@ public enum Discount {
         return Map.of(discount.type, dDayDiscount);
     }
 
-    private static Map<String, Integer> mainDishDiscount(Map<Menu, Integer> orderMenu, Discount discount) {
-        int mainDishDiscount = 0;
-        for (Menu menu : orderMenu.keySet()) {
-            if (Menu.isMain(menu)) {
-                mainDishDiscount += orderMenu.get(menu) * discount.discount;
-            }
-        }
-        return Map.of(discount.type, mainDishDiscount);
-    }
-
-    private static Map<String, Integer> dessertDiscount(Map<Menu, Integer> orderMenu, Discount discount) {
-        int dessertDiscount = 0;
-        for (Menu menu : orderMenu.keySet()) {
-            if (Menu.isDessert(menu)) {
-                dessertDiscount += orderMenu.get(menu) * discount.discount;
-            }
-        }
-        return Map.of(discount.type, dessertDiscount);
+    private static Map<String, Integer> menuTypeDiscount(Map<Menu, Integer> orderMenu, Discount discount, Predicate<Menu> menuType) {
+        int subPartDiscount = orderMenu.keySet().stream()
+                .filter(menuType)
+                .mapToInt(menu -> orderMenu.get(menu) * discount.discount)
+                .sum();
+        return Map.of(discount.type, subPartDiscount);
     }
 
     private static Map<String, Integer> starDayDiscount(Discount discount) {
