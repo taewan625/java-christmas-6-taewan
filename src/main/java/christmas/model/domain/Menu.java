@@ -1,8 +1,9 @@
 package christmas.model.domain;
 
-import christmas.util.XmasConverter;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public enum Menu {
     NO_MENU("없는 메뉴", "noMenu", 0),
@@ -40,26 +41,31 @@ public enum Menu {
                 .orElse(NO_MENU);
     }
 
-    public static String getMenuName(String promotion, int count) {
-        return Menu.valueOf(promotion).name + " " + count;
-    }
-
-    public static int getMenuPrice(String promotion, int count) {
-        return Menu.valueOf(promotion).price * count;
-    }
-
-    public static List<String> getOrderMenus(Map<Menu, Integer> orderMenus) {
-        return orderMenus.keySet().stream()
-                .map(menu -> XmasConverter.menuData(menu.name, orderMenus.get(menu)))
-                .toList();
-    }
-
     public static int getTotalOrderPrice(Map<Menu, Integer> orderMenus) {
         return orderMenus.keySet().stream()
                 .map(menu -> menu.price * orderMenus.get(menu))
                 .reduce(0, Integer::sum);
     }
 
+    public static Map<String, Integer> getOrderMenus(Map<Menu, Integer> orderMenus) {
+        return orderMenus.entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().name,
+                        Map.Entry::getValue));
+    }
+    public static Map<String, Integer> getPromotionMenus(Map<Promotion, Integer> promotions) {
+        return promotions.entrySet().stream()
+                .collect(Collectors.toMap(
+                        promotion -> Menu.valueOf(promotion.getKey().name()).name,
+                        Map.Entry::getValue
+                ));
+    }
+
+    public static int getPromotionBenefit(String promotion, int count) {
+        return Menu.valueOf(promotion).price * count;
+    }
+
+    // boolean
     public static boolean isMain(Menu orderMenu) {
         return Objects.equals(orderMenu.type, Menu.MAIN);
     }
