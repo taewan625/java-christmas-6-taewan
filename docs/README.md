@@ -98,40 +98,79 @@
 
 - view
     - input
+        - reserveDate()
+        - orderMenu()
     - output
+        - print()
+        - printInitQuestion()
+        - printReservationFullDate()
+        - printOrderMenus()
+        - printOrderMenusPrice()
+        - showPromotionMenuData()
+        - showEventBenefitData()
+        - showEventBenefitPrice()
+        - showBadge()
 - controller
+    - run()
+        - book()
+            - getDate()
+            - getOrders()
+        - showCustomerOrder()
+        - showCustomerPromotion()
+        - showCustomerEvent()
+        - showPayment()
+        - showBadge()
 - util
     - validator
+        - formatCheck()
+        - orderMenu()
+            - maxOrderMenuCount()
+            - orderMenusCount()
+                - naturalNumberMaxRange()
+                    - checkNaturalNumber()
+        - date()
     - converter
+        - splitOrderDatas()
+        - orderMenus()
+        - orderMenusCounts()
+
+        - dateToFullDate()
+        - toWon()
+        - toMinusWon()
+        - benefitData()
+        - menuData()
 
 ### 3.2. 도메인 구현
 
 - Enum : 기본적으로 제공되는 값을 이용해야된느 도메인
     - Menu
         - getMenu() : 존재하는 메뉴 반환 없을 시, 메뉴 없음 반환
-        - getMenuName() : 메뉴 이름 + 수량 반환
-        - getMenuPrice() : 메뉴 가격 반환
-        - getOrderMenus() : 주문한 메뉴 이름 + 개수 format 된 값 반환
         - getTotalOrderPrice() : 주문한 메뉴 총 주문 금액
+        - createOrderMenus() : {주문한 메뉴 상수, 개수} Map으로 반환
+        - getOrderMenus() : 주문한 메뉴 이름 + 개수 format 된 값 반환
+        - getPromotionMenus() : 증정 메뉴 이름 + 개수 format 된 값 반환
+        - getPromotionBenefit() : 이벤트 혜택가 반환
         - isMain()
         - isDessert()
         - isDrink()
+        - isNotMenu()
     - Month
         - applyDiscountByDate() : 예약 날짜의 할인 종류
             - isDiscountDate()
     - Promotion
-        - isPromotion()
+        - isPromotion() : promotion이면 {Promotion, Integer 수량} Map 반환
         - setPromotionDatas() : CustomerEvent의 benefitDatas에 들어갈 데이터 생성
-        - getPromotionProduct() : Menu.getMenuName() 호출
     - Discount
-        - applyDiscount(): Month를 통해 받아온 discountType을 하위 메서드에 적용
-            - dDayDiscount() : 디데일 할인 적용
-            - mainDishDiscount() : 주중 메인 디시 할인 적용
-            - dessertDiscount() : 주말 디저트 할인 적용
-            - starDayDiscount() : 별표친날 할인 적용
+        - getDiscounts() : 예약일과 주문에 부합한 할인 정보 반환
+            - applyDiscount(): Month를 통해 받아온 discountType을 하위 메서드에 적용
+                - dDayDiscount() : 디데일 할인 적용
+                - mainDishDiscount() : 주중 메인 디시 할인 적용
+                - dessertDiscount() : 주말 디저트 할인 적용
+                - starDayDiscount() : 별표친날 할인 적용
     - Badge
         - isBadge()
-        - getEventBadgeName()
+        - getEventBadgeName() : 존재시 배지 반환, 없을 시 빈문자열 반환
+
 - class : enum을 이용해서 값을 넣어야하는 도메인
     - CustomerOrder : reservationDate, orderMenus, totalOrderPrice
         - 초기화
@@ -152,7 +191,7 @@
             - setBadge()
             - sumEventValues()
         - 사용
-            - getPromotionProducts()
+            - getPromotionMenus()
             - getBenefitData()
             - getTotalBenefit()
             - getPredictPay()
@@ -175,7 +214,7 @@
 5. 이벤트 enum에서 반환하는 Map은 customerEvent에서 map.putAll() 이용해서 값 저장하는 메서드 생성하기
 6. event에서 출력 관련 메서드 출력
 
-## 고민
+### 3.3.2. 고민
 
 1. 따로 분리해야 될까? - 이벤트별로 if 조건문까지 동일. 사전에 orderMenu를 한 곳에서 분리해주는게 좋지 않을까?
     ```
@@ -201,3 +240,15 @@
    return getBadge;
    }
     ```
+
+## 3.4 Unit Test
+
+- [x] Badge
+- [x] Month
+- [x] Menu
+- [x] Promotion
+- [x] Discount
+- [x] Converter
+- [x] validator
+- [x] CustomerEvent
+- [x] CustomerOrder
