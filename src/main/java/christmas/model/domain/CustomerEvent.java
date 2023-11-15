@@ -55,10 +55,12 @@ public class CustomerEvent {
     }
 
     private int sumEventValues(Map<String, Integer> datas) {
-        return datas.values().stream().mapToInt(Integer::intValue).sum();
+        return datas.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
-    // 사용
+    // controller 이용
     public List<String> getPromotionMenus() {
         return XmasConverter.menuData(Menu.getPromotionMenus(promotions));
     }
